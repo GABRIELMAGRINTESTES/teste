@@ -160,7 +160,7 @@
                     </section>
 
                     <!-- Informações do Produto -->
-                    <section class="mt-8 md:mt-0">
+                    <section class="mt-8 md:mt-0 text-center md:text-left">
                         <h1 id="productName" class="text-3xl font-bold"></h1>
                         <p
                             id="productPrice"
@@ -172,12 +172,24 @@
                         ></p>
                         <p id="productSize" class="text-gray-600 mt-2"></p>
 
-                        <!-- Botão de compra -->
-                        <button
-                            class="bg-black text-white px-6 py-2 rounded-full mt-4"
-                        >
-                            COMPRAR
-                        </button>
+                        <!-- Mensagem de contato e logo do Instagram -->
+                        <div class="mt-4">
+                            <p class="text-sm text-gray-600">
+                                Para finalizar a compra, entre em contato no
+                                nosso Instagram!
+                            </p>
+                            <a
+                                href="https://www.instagram.com/magrin_store/"
+                                target="_blank"
+                                class="inline-block mt-2"
+                            >
+                                <img
+                                    src="images/instagram-logo.png"
+                                    alt="Instagram"
+                                    class="w-6 h-6 mx-auto md:mx-0"
+                                />
+                            </a>
+                        </div>
                     </section>
                 </div>
             </div>
@@ -234,8 +246,10 @@
                     `R$${parseFloat(product.preco).toFixed(2)}`;
                 document.getElementById("productSize").textContent =
                     `Tamanho: ${product.tamanho}`;
+                const precoComAcrescimo = parseFloat(product.preco) * 1.08; // Adiciona 8%
+                const valorParcela = (precoComAcrescimo / 6).toFixed(2); // Divide por 6
                 document.getElementById("productInstallments").textContent =
-                    `6x de R$${(parseFloat(product.preco) / 6).toFixed(2)} sem juros`;
+                    `6x de R$${valorParcela}`;
 
                 // Exibe as imagens do produto no carrossel
                 const carouselTrack =
