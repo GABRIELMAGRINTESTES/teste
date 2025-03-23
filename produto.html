@@ -19,89 +19,54 @@
             rel="stylesheet"
         />
         <style>
-            /* Estilos personalizados para o carrossel */
-            .carousel-container {
-                width: 100%;
-                max-width: 500px; /* Tamanho máximo do carrossel */
-                margin: 0 auto;
-                position: relative;
-                overflow: hidden;
-            }
-
-            .carousel-track {
-                display: flex;
-                transition: transform 0.5s ease-in-out;
-            }
-
-            .carousel-track > div {
-                flex: 0 0 100%;
-                width: 100%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .carousel-track img {
-                width: 100%;
-                height: auto;
-                border-radius: 8px;
-                object-fit: cover;
-            }
-
-            .carousel-prev,
-            .carousel-next {
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                background-color: rgba(0, 0, 0, 0.5);
-                border: none;
-                cursor: pointer;
-                padding: 6px;
-                font-size: 14px;
+            /* Estilos personalizados para o menu */
+            .menu {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 250px; /* Largura do menu */
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                z-index: 1000;
+                padding: 20px;
                 color: white;
-                transition: background-color 0.3s ease;
-                z-index: 10;
-                width: 30px;
-                height: 30px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 50%;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
             }
-
-            .carousel-prev:hover,
-            .carousel-next:hover {
-                background-color: rgba(0, 0, 0, 0.8);
+            .menu.open {
+                display: block;
             }
-
-            .carousel-prev {
-                left: 20px;
+            .menu ul {
+                list-style: none;
+                padding: 0;
             }
-
-            .carousel-next {
-                right: 20px;
+            .menu ul li {
+                margin: 15px 0;
             }
-
-            @media (max-width: 768px) {
-                .carousel-container {
-                    max-width: 100%; /* Ocupa toda a largura no mobile */
-                }
-
-                .carousel-prev,
-                .carousel-next {
-                    padding: 4px;
-                    font-size: 12px;
-                    width: 24px;
-                    height: 24px;
-                }
-
-                .carousel-prev {
-                    left: 10px;
-                }
-
-                .carousel-next {
-                    right: 10px;
-                }
+            .menu ul li a {
+                color: white;
+                text-decoration: none;
+                font-size: 18px;
+            }
+            .menu ul li a:hover {
+                color: #ccc;
+            }
+            .submenu {
+                display: none;
+                margin-left: 20px;
+            }
+            .submenu.open {
+                display: block;
+            }
+            .close-button {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
             }
         </style>
     </head>
@@ -109,7 +74,7 @@
         <!-- HEADER -->
         <header class="flex items-center justify-between p-4 border-b">
             <!-- Ícone do menu -->
-            <button class="text-2xl"><i class="fas fa-bars"></i></button>
+            <button id="menuButton" class="text-2xl"><i class="fas fa-bars"></i></button>
 
             <!-- Nome da loja -->
             <h1 class="text-2xl font-bold">
@@ -123,6 +88,28 @@
                 <i class="fas fa-search"></i>
             </button>
         </header>
+
+        <!-- MENU DE NAVEGAÇÃO -->
+        <div id="menu" class="menu">
+            <button class="close-button" id="closeMenuButton">
+                <i class="fas fa-times"></i>
+            </button>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li>
+                    <a href="#" id="produtosMenu">Produtos <i class="fas fa-chevron-down"></i></a>
+                    <ul id="produtosSubmenu" class="submenu">
+                        <li><a href="index.html?category=camisas">Camisas</a></li>
+                        <li><a href="index.html?category=tenis">Tênis</a></li>
+                        <li><a href="index.html?category=jaquetas">Jaquetas</a></li>
+                        <li><a href="index.html?category=outros">Outros Itens</a></li>
+                        <li><a href="index.html?category=pronta-entrega">Pronta Entrega</a></li>
+                    </ul>
+                </li>
+                <li><a href="quemsomos.html">Quem Somos</a></li>
+                <li><a href="contatos.html">Contatos</a></li>
+            </ul>
+        </div>
 
         <!-- Caixa de busca (inicialmente oculta) -->
         <div id="searchBox" class="hidden p-4 border-b">
@@ -336,6 +323,25 @@
                     // Redireciona para o index.html com o parâmetro ?search=open
                     window.location.href = "index.html?search=open";
                 });
+        </script>
+
+        <!-- Script para o menu -->
+        <script>
+            document.getElementById("menuButton").addEventListener("click", function () {
+                const menu = document.getElementById("menu");
+                menu.classList.toggle("open");
+            });
+
+            document.getElementById("closeMenuButton").addEventListener("click", function () {
+                const menu = document.getElementById("menu");
+                menu.classList.remove("open");
+            });
+
+            document.getElementById("produtosMenu").addEventListener("click", function (e) {
+                e.preventDefault();
+                const submenu = document.getElementById("produtosSubmenu");
+                submenu.classList.toggle("open");
+            });
         </script>
     </body>
 </html>

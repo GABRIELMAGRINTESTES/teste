@@ -18,12 +18,78 @@
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
             rel="stylesheet"
         />
+        <style>
+            /* Estilos personalizados para o menu */
+            .menu {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 250px; /* Largura do menu */
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                z-index: 1000;
+                padding: 20px;
+                color: white;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            }
+            .menu.open {
+                display: block;
+            }
+            .menu ul {
+                list-style: none;
+                padding: 0;
+            }
+            .menu ul li {
+                margin: 15px 0;
+            }
+            .menu ul li a {
+                color: white;
+                text-decoration: none;
+                font-size: 18px;
+            }
+            .menu ul li a:hover {
+                color: #ccc;
+            }
+            .submenu {
+                display: none;
+                margin-left: 20px;
+            }
+            .submenu.open {
+                display: block;
+            }
+            .close-button {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+            }
+            /* Estilo para o balão "Pronta Entrega" */
+            .pronta-entrega-balao {
+                background-color: #007bff; /* Azul */
+                color: white;
+                padding: 5px 10px;
+                border-radius: 15px;
+                font-size: 14px;
+                font-weight: bold;
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                z-index: 1;
+            }
+        </style>
     </head>
     <body class="bg-white text-black">
         <!-- HEADER -->
         <header class="flex items-center justify-between p-4 border-b">
             <!-- Ícone do menu -->
-            <button class="text-2xl"><i class="fas fa-bars"></i></button>
+            <button id="menuButton" class="text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
 
             <!-- Nome da loja -->
             <h1 class="text-2xl font-bold">
@@ -38,24 +104,43 @@
             </button>
         </header>
 
-        <!-- Caixa de busca (inicialmente oculta) -->
-        <div id="searchBox" class="hidden p-4 border-b">
-            <div class="relative w-full max-w-md mx-auto">
-                <input
-                    class="border rounded-full pl-4 pr-10 py-2 w-full"
-                    id="searchInput"
-                    placeholder="Buscar"
-                    type="text"
-                />
-                <button
-                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
-                >
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+        <!-- MENU DE NAVEGAÇÃO -->
+        <div id="menu" class="menu">
+            <button class="close-button" id="closeMenuButton">
+                <i class="fas fa-times"></i>
+            </button>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li>
+                    <a href="#" id="produtosMenu"
+                        >Produtos <i class="fas fa-chevron-down"></i
+                    ></a>
+                    <ul id="produtosSubmenu" class="submenu">
+                        <li>
+                            <a href="index.html?category=camisas">Camisas</a>
+                        </li>
+                        <li><a href="index.html?category=tenis">Tênis</a></li>
+                        <li>
+                            <a href="index.html?category=jaquetas">Jaquetas</a>
+                        </li>
+                        <li>
+                            <a href="index.html?category=outros"
+                                >Outros Itens</a
+                            >
+                        </li>
+                        <li>
+                            <a href="index.html?category=pronta entrega"
+                                >Pronta Entrega</a
+                            >
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="quemsomos.html">Quem Somos</a></li>
+                <li><a href="contatos.html">Contatos</a></li>
+            </ul>
         </div>
 
-        <!-- MENU DE NAVEGAÇÃO -->
+        <!-- CABEÇALHO DE CATEGORIAS -->
         <nav class="bg-blue-700 p-4">
             <ul class="flex justify-center space-x-4">
                 <li>
@@ -86,7 +171,7 @@
                     <a
                         class="text-white font-bold"
                         href="#"
-                        onclick="loadProductsByCategory('outros itens')"
+                        onclick="loadProductsByCategory('outros')"
                         >Outros Itens</a
                     >
                 </li>
@@ -100,6 +185,24 @@
                 </li>
             </ul>
         </nav>
+
+        <!-- Caixa de busca (inicialmente oculta) -->
+        <div id="searchBox" class="hidden p-4 border-b">
+            <form id="searchForm" class="relative w-full max-w-md mx-auto">
+                <input
+                    class="border rounded-full pl-4 pr-10 py-2 w-full"
+                    id="searchInput"
+                    placeholder="Buscar"
+                    type="text"
+                />
+                <button
+                    type="submit"
+                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                >
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+        </div>
 
         <!-- CONTEÚDO PRINCIPAL (CARROSSEL DE PRODUTOS EM DESTAQUE) -->
         <main class="p-4">
@@ -216,7 +319,7 @@
             document
                 .getElementById("searchIcon")
                 .addEventListener("click", function () {
-                    let searchBox = document.getElementById("searchBox");
+                    const searchBox = document.getElementById("searchBox");
                     searchBox.classList.toggle("hidden");
                 });
         </script>
@@ -227,6 +330,86 @@
             if (params.get("search") === "open") {
                 // Abre a caixa de busca
                 document.getElementById("searchBox").classList.remove("hidden");
+            }
+        </script>
+
+        <!-- Script para o menu -->
+        <script>
+            document
+                .getElementById("menuButton")
+                .addEventListener("click", function () {
+                    const menu = document.getElementById("menu");
+                    menu.classList.toggle("open");
+                });
+
+            document
+                .getElementById("closeMenuButton")
+                .addEventListener("click", function () {
+                    const menu = document.getElementById("menu");
+                    menu.classList.remove("open");
+                });
+
+            document
+                .getElementById("produtosMenu")
+                .addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const submenu = document.getElementById("produtosSubmenu");
+                    submenu.classList.toggle("open");
+                });
+        </script>
+
+        <!-- Script para o formulário de busca -->
+        <script>
+            document
+                .getElementById("searchForm")
+                .addEventListener("submit", function (e) {
+                    e.preventDefault(); // Evita o recarregamento da página
+                    const query = document
+                        .getElementById("searchInput")
+                        .value.toLowerCase();
+                    const filteredProducts = allProducts.filter(
+                        (product) => product.name.toLowerCase().includes(query), // Busca pelo nome do produto
+                    );
+                    displayProducts(filteredProducts);
+                });
+        </script>
+
+        <!-- Script para exibir o balão "Pronta Entrega" -->
+        <script>
+            function displayProducts(products) {
+                const productGrid = document.getElementById("productGrid");
+                productGrid.innerHTML = ""; // Limpa o conteúdo atual
+
+                products.forEach((product) => {
+                    const productCard = document.createElement("div");
+                    productCard.className = "relative";
+
+                    if (product.category === "pronta entrega") {
+                        const balao = document.createElement("div");
+                        balao.className = "pronta-entrega-balao";
+                        balao.textContent = "Pronta Entrega";
+                        productCard.appendChild(balao);
+                    }
+
+                    const productImage = document.createElement("img");
+                    productImage.src = product.image;
+                    productImage.alt = product.name;
+                    productImage.className = "w-full";
+
+                    const productName = document.createElement("h3");
+                    productName.textContent = product.name;
+                    productName.className = "text-center mt-2";
+
+                    const productPrice = document.createElement("p");
+                    productPrice.textContent = `R$ ${product.price.toFixed(2)}`;
+                    productPrice.className = "text-center text-gray-700";
+
+                    productCard.appendChild(productImage);
+                    productCard.appendChild(productName);
+                    productCard.appendChild(productPrice);
+
+                    productGrid.appendChild(productCard);
+                });
             }
         </script>
     </body>

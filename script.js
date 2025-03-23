@@ -87,11 +87,14 @@ function displayProducts(products) {
 
 // Função para buscar itens na barra de pesquisa
 function searchItems(event) {
-    event.preventDefault();
+    event.preventDefault(); // Evita o recarregamento da página
     const query = document.getElementById("searchInput").value.toLowerCase();
     const filteredProducts = allProducts.filter(
         (product) => product.name.toLowerCase().includes(query), // Busca pelo nome do produto
     );
+
+    // Atualiza o título para "Produtos" ao realizar a busca
+    document.getElementById("categoryTitle").textContent = "Produtos";
     displayProducts(filteredProducts);
 }
 
@@ -200,7 +203,20 @@ function initializeCarousel() {
 // Carregar produtos da categoria "camisas" ao iniciar a página
 document.addEventListener("DOMContentLoaded", async () => {
     await fetchProducts(); // Carrega os produtos
-    loadProductsByCategory("camisas"); // Carrega a categoria "camisas" por padrão
+
+    // Verifica se há uma categoria na URL
+    const params = new URLSearchParams(window.location.search);
+    const category = params.get("category");
+
+    if (category) {
+        loadProductsByCategory(category); // Carrega a categoria da URL
+    } else {
+        loadProductsByCategory("camisas"); // Carrega a categoria padrão
+    }
+
+    // Vincula a função de busca ao formulário de busca
+    const searchForm = document.getElementById("searchForm");
+    searchForm.addEventListener("submit", searchItems);
 });
 
 // Carrega os detalhes do produto ao carregar a página produto.html
