@@ -1,76 +1,285 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Catálogo de camisas da Magrin Store: nacionais, internacionais, retrô e muito mais!">
-    <title>Magrin Store Catálogo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-</head>
-<body class="bg-white text-black">
-    <!-- HEADER -->
-    <header class="flex items-center justify-between p-4 border-b">
-        <!-- Ícone do menu -->
-        <button class="text-2xl"><i class="fas fa-bars"></i></button>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Catálogo de camisas da Magrin Store: nacionais, internacionais, retrô e muito mais!"
+        />
+        <title>Magrin Store Catálogo</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            /* Estilos personalizados para o carrossel */
+            .carousel-container {
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                position: relative;
+                overflow: hidden;
+            }
 
-        <!-- Nome da loja -->
-        <h1 class="text-2xl font-bold">MAGRIN STORE</h1>
+            .carousel-track {
+                display: flex;
+                transition: transform 0.5s ease-in-out;
+            }
 
-        <!-- Ícone da lupa (ao clicar, exibe a caixa de busca) -->
-        <button id="searchIcon" class="text-2xl"><i class="fas fa-search"></i></button>
-    </header>
+            .carousel-track > div {
+                flex: 0 0 100%; /* Cada slide ocupa 100% da largura do contêiner */
+                width: 100%;
+                display: flex;
+                justify-content: center; /* Centraliza a imagem horizontalmente */
+            }
 
-    <!-- Caixa de busca (inicialmente oculta) -->
-    <div id="searchBox" class="hidden p-4 border-b">
-        <div class="relative w-full max-w-md mx-auto">
-            <input class="border rounded-full pl-4 pr-10 py-2 w-full" id="searchInput" placeholder="Buscar" type="text">
-            <button class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">
+            .carousel-track img {
+                width: 50%; /* Reduz o tamanho da imagem pela metade */
+                border-radius: 8px;
+            }
+
+            .carousel-prev,
+            .carousel-next {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                background-color: rgba(0, 0, 0, 0.5);
+                border: none;
+                cursor: pointer;
+                padding: 10px;
+                font-size: 18px;
+                color: white;
+                transition: background-color 0.3s ease;
+            }
+
+            .carousel-prev:hover,
+            .carousel-next:hover {
+                background-color: rgba(0, 0, 0, 0.8);
+            }
+
+            .carousel-prev {
+                left: 10px;
+            }
+
+            .carousel-next {
+                right: 10px;
+            }
+        </style>
+    </head>
+    <body class="bg-white text-black">
+        <!-- HEADER -->
+        <header class="flex items-center justify-between p-4 border-b">
+            <!-- Ícone do menu -->
+            <button class="text-2xl"><i class="fas fa-bars"></i></button>
+
+            <!-- Nome da loja -->
+            <h1 class="text-2xl font-bold">
+                <a href="index.html" class="text-black hover:text-gray-600">
+                    MAGRIN STORE
+                </a>
+            </h1>
+
+            <!-- Ícone da lupa (ao clicar, exibe a caixa de busca) -->
+            <button id="searchIcon" class="text-2xl">
                 <i class="fas fa-search"></i>
             </button>
-        </div>
-    </div>
+        </header>
 
-    <!-- MENU DE NAVEGAÇÃO -->
-    <nav class="bg-blue-700 p-4">
-        <ul class="flex justify-center space-x-4">
-            <li><a class="text-white font-bold" href="#" onclick="loadProductsByCategory('camisas')">Camisas</a></li>
-            <li><a class="text-white font-bold" href="#" onclick="loadProductsByCategory('tenis')">Tênis</a></li>
-            <li><a class="text-white font-bold" href="#" onclick="loadProductsByCategory('jaquetas')">Jaquetas</a></li>
-            <li><a class="text-white font-bold" href="#" onclick="loadProductsByCategory('outros itens')">Outros Itens</a></li>
-            <li><a class="text-white font-bold" href="#" onclick="loadProductsByCategory('pronta entrega')">Pronta Entrega</a></li>
-        </ul>
-    </nav>
-
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main class="p-4">
-        <section class="deals">
-            <h2 class="text-center text-2xl font-bold mb-4" id="categoryTitle">Produtos</h2>
-            <p class="message text-center text-red-500" id="searchMessage"></p>
-
-            <!-- GRADE DE PRODUTOS: Agora com 2 colunas no mobile -->
-            <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" id="productGrid">
-                <!-- Os produtos serão carregados aqui -->
+        <!-- Caixa de busca (inicialmente oculta) -->
+        <div id="searchBox" class="hidden p-4 border-b">
+            <div class="relative w-full max-w-md mx-auto">
+                <input
+                    class="border rounded-full pl-4 pr-10 py-2 w-full"
+                    id="searchInput"
+                    placeholder="Buscar"
+                    type="text"
+                />
+                <button
+                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                >
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
-        </section>
-    </main>
+        </div>
 
-    <!-- FOOTER -->
-    <footer class="bg-gray-700 text-white text-center p-4 mt-4">
-        <p>© 2024 Magrin Store</p>
-    </footer>
+        <!-- MENU DE NAVEGAÇÃO -->
+        <nav class="bg-blue-700 p-4">
+            <ul class="flex justify-center space-x-4">
+                <li>
+                    <a
+                        class="text-white font-bold"
+                        href="#"
+                        onclick="loadProductsByCategory('camisas')"
+                        >Camisas</a
+                    >
+                </li>
+                <li>
+                    <a
+                        class="text-white font-bold"
+                        href="#"
+                        onclick="loadProductsByCategory('tenis')"
+                        >Tênis</a
+                    >
+                </li>
+                <li>
+                    <a
+                        class="text-white font-bold"
+                        href="#"
+                        onclick="loadProductsByCategory('jaquetas')"
+                        >Jaquetas</a
+                    >
+                </li>
+                <li>
+                    <a
+                        class="text-white font-bold"
+                        href="#"
+                        onclick="loadProductsByCategory('outros itens')"
+                        >Outros Itens</a
+                    >
+                </li>
+                <li>
+                    <a
+                        class="text-white font-bold"
+                        href="#"
+                        onclick="loadProductsByCategory('pronta entrega')"
+                        >Pronta Entrega</a
+                    >
+                </li>
+            </ul>
+        </nav>
 
-    <!-- Importação do Supabase via CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.12.0/+esm" type="module"></script>
-    <script src="script.js" type="module"></script>
+        <!-- CONTEÚDO PRINCIPAL (CARROSSEL DE PRODUTOS EM DESTAQUE) -->
+        <main class="p-4">
+            <section class="carousel-container">
+                <div class="carousel-track">
+                    <!-- Imagens do carrossel (adicione manualmente) -->
+                    <div class="w-full">
+                        <img src="images/bra.j.98.1.1.jpg" alt="Produto 1" />
+                    </div>
+                    <div class="w-full">
+                        <img src="images/santos11.1.1.jpg" alt="Produto 2" />
+                    </div>
+                    <div class="w-full">
+                        <img
+                            src="images/Corinthians96.1.1.jpg"
+                            alt="Produto 3"
+                        />
+                    </div>
+                </div>
+                <!-- Botões de navegação -->
+                <button class="carousel-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </section>
 
-    <!-- Script para exibir/ocultar a caixa de busca -->
-    <script>
-        document.getElementById("searchIcon").addEventListener("click", function() {
-            let searchBox = document.getElementById("searchBox");
-            searchBox.classList.toggle("hidden");
-        });
-    </script>
-</body>
+            <!-- Mensagem de destaque 
+            <p class="text-center text-gray-600 mt-4">
+                Destaques da semana! Confira nossos produtos mais populares.
+            </p> -->
+        </main>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="p-4">
+            <section class="deals">
+                <h2
+                    class="text-center text-2xl font-bold mb-4"
+                    id="categoryTitle"
+                >
+                    Produtos
+                </h2>
+                <p
+                    class="message text-center text-red-500"
+                    id="searchMessage"
+                ></p>
+
+                <!-- GRADE DE PRODUTOS: Agora com 2 colunas no mobile -->
+                <div
+                    class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
+                    id="productGrid"
+                >
+                    <!-- Os produtos serão carregados aqui -->
+                </div>
+            </section>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="bg-gray-700 text-white text-center p-4 mt-4">
+            <p>© 2025 Magrin Store</p>
+        </footer>
+
+        <script>
+            // Variáveis globais
+            let currentIndex = 0; // Índice atual do carrossel
+            const carouselTrack = document.querySelector(".carousel-track");
+            const slides = document.querySelectorAll(".carousel-track > div");
+            const totalSlides = slides.length;
+
+            // Função para atualizar a posição do carrossel
+            function updateCarousel() {
+                const offset = -currentIndex * 100; // Calcula o deslocamento
+                carouselTrack.style.transform = `translateX(${offset}%)`;
+            }
+
+            // Função para avançar para o próximo slide
+            function nextSlide() {
+                if (currentIndex < totalSlides - 1) {
+                    currentIndex++;
+                } else {
+                    currentIndex = 0; // Volta para o primeiro slide
+                }
+                updateCarousel();
+            }
+
+            // Evento para o botão "Anterior"
+            document
+                .querySelector(".carousel-prev")
+                .addEventListener("click", () => {
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                    } else {
+                        currentIndex = totalSlides - 1; // Volta para o último slide
+                    }
+                    updateCarousel();
+                });
+
+            // Evento para o botão "Próximo"
+            document
+                .querySelector(".carousel-next")
+                .addEventListener("click", () => {
+                    nextSlide();
+                });
+
+            // Inicializa o carrossel
+            updateCarousel();
+
+            // Autoplay: Passa para o próximo slide a cada 12 segundos
+            setInterval(nextSlide, 12000); // 12000ms = 12s
+        </script>
+
+        <!-- Importação do Supabase via CDN -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.12.0/+esm"
+            type="module"
+        ></script>
+        <script src="script.js" type="module"></script>
+
+        <!-- Script para exibir/ocultar a caixa de busca -->
+        <script>
+            document
+                .getElementById("searchIcon")
+                .addEventListener("click", function () {
+                    let searchBox = document.getElementById("searchBox");
+                    searchBox.classList.toggle("hidden");
+                });
+        </script>
+    </body>
 </html>
