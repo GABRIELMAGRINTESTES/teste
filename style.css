@@ -1,0 +1,52 @@
+/* Estilos personalizados para o carrossel */
+.carousel-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.carousel-track > div {
+    flex: 0 0 100%; /* Cada slide ocupa 100% da largura do contêiner */
+    width: 100%;
+    display: flex;
+    justify-content: center; /* Centraliza a imagem horizontalmente */
+}
+
+.carousel-track img {
+    width: 50%; /* Reduz o tamanho da imagem pela metade */
+    border-radius: 8px;
+}
+
+.carousel-prev,
+.carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 18px;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.carousel-prev:hover,
+.carousel-next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.carousel-prev {
+    left: 10px;
+}
+
+.carousel-next {
+    right: 10px;
+}

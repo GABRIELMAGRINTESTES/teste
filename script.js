@@ -4,7 +4,10 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const supabaseUrl = "https://akpmbgyrnoqvgegwnciz.supabase.co";
 const supabaseKey =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrcG1iZ3lybm9xdmdlZ3duY2l6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ2NzE5NDAsImV4cCI6MjA1MDI0Nzk0MH0.mbN5DB16tfc_iQ6-chS2dUI7-0wc23KWQB-TcWib4t8";
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(
+    "https://akpmbgyrnoqvgegwnciz.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrcG1iZ3lybm9xdmdlZ3duY2l6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ2NzE5NDAsImV4cCI6MjA1MDI0Nzk0MH0.mbN5DB16tfc_iQ6-chS2dUI7-0wc23KWQB-TcWib4t8",
+);
 
 // Variáveis globais
 let allProducts = []; // Armazenar todos os produtos
@@ -36,7 +39,8 @@ async function loadProductsByCategory(category) {
         .sort((a, b) => a.name.localeCompare(b.name)); // Ordena por ordem alfabética
 
     // Atualiza o título da categoria
-    document.getElementById("categoryTitle").textContent = category.charAt(0).toUpperCase() + category.slice(1);
+    document.getElementById("categoryTitle").textContent =
+        category.charAt(0).toUpperCase() + category.slice(1);
     displayProducts(filteredProducts);
 }
 
@@ -61,7 +65,7 @@ function displayProducts(products) {
                     <img src="${product.images.length > 0 ? product.images[0] : product.image}" 
                         alt="Imagem de ${product.name}" 
                         class="w-full">
-                    <button class="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded-full">
+                    <button class="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded-full" data-id="${product.id}">
                         <i class="fas fa-shopping-bag"></i>
                     </button>
                 </div>
@@ -74,6 +78,14 @@ function displayProducts(products) {
         `;
         grid.innerHTML += productItem;
     });
+
+    // Adiciona evento de clique aos botões de compra
+    document.querySelectorAll("button[data-id]").forEach((button) => {
+        button.addEventListener("click", () => {
+            const productId = button.getAttribute("data-id");
+            window.location.href = `produto.html?id=${productId}`;
+        });
+    });
 }
 
 // Função para buscar itens na barra de pesquisa
@@ -81,7 +93,7 @@ function searchItems(event) {
     event.preventDefault();
     const query = document.getElementById("searchInput").value.toLowerCase();
     const filteredProducts = allProducts.filter(
-        (product) => product.name.toLowerCase().includes(query) // Busca pelo nome do produto
+        (product) => product.name.toLowerCase().includes(query), // Busca pelo nome do produto
     );
     displayProducts(filteredProducts);
 }

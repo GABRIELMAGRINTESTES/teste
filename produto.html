@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="pt">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Detalhes do produto na Magrin Store"
+        />
+        <title>Detalhes do Produto - Magrin Store</title>
+        <link rel="stylesheet" href="style.css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            /* Estilos personalizados para o carrossel */
+            .carousel-container {
+                width: 100%;
+                max-width: 1200px;
+                margin: 0 auto;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .carousel-track {
+                display: flex;
+                transition: transform 0.5s ease-in-out;
+            }
+
+            .carousel-track > div {
+                flex: 0 0 100%;
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .carousel-track img {
+                width: 100%;
+                height: auto;
+                border-radius: 8px;
+                object-fit: cover;
+            }
+
+            .carousel-prev,
+            .carousel-next {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                background-color: rgba(0, 0, 0, 0.5);
+                border: none;
+                cursor: pointer;
+                padding: 6px;
+                font-size: 14px;
+                color: white;
+                transition: background-color 0.3s ease;
+                z-index: 10;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+            }
+
+            .carousel-prev:hover,
+            .carousel-next:hover {
+                background-color: rgba(0, 0, 0, 0.8);
+            }
+
+            .carousel-prev {
+                left: 20px;
+            }
+
+            .carousel-next {
+                right: 20px;
+            }
+
+            @media (max-width: 768px) {
+                .carousel-prev,
+                .carousel-next {
+                    padding: 4px;
+                    font-size: 12px;
+                    width: 24px;
+                    height: 24px;
+                }
+
+                .carousel-prev {
+                    left: 10px;
+                }
+
+                .carousel-next {
+                    right: 10px;
+                }
+            }
+        </style>
+    </head>
+    <body class="bg-white text-black">
+        <!-- HEADER -->
+        <header class="flex items-center justify-between p-4 border-b">
+            <!-- Ícone do menu -->
+            <button class="text-2xl"><i class="fas fa-bars"></i></button>
+
+            <!-- Nome da loja -->
+            <h1 class="text-2xl font-bold">
+                <a href="index.html" class="text-black hover:text-gray-600">
+                    MAGRIN STORE
+                </a>
+            </h1>
+
+            <!-- Ícone da lupa (ao clicar, exibe a caixa de busca) -->
+            <button id="searchIcon" class="text-2xl">
+                <i class="fas fa-search"></i>
+            </button>
+        </header>
+
+        <!-- Caixa de busca (inicialmente oculta) -->
+        <div id="searchBox" class="hidden p-4 border-b">
+            <div class="relative w-full max-w-md mx-auto">
+                <input
+                    class="border rounded-full pl-4 pr-10 py-2 w-full"
+                    id="searchInput"
+                    placeholder="Buscar"
+                    type="text"
+                />
+                <button
+                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                >
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- CONTEÚDO PRINCIPAL (DETALHES DO PRODUTO) -->
+        <main class="p-4">
+            <!-- Carrossel de Imagens do Produto -->
+            <section class="carousel-container">
+                <div class="carousel-track" id="productCarousel">
+                    <!-- Imagens do produto serão injetadas aqui via JavaScript -->
+                </div>
+                <!-- Botões de navegação -->
+                <button class="carousel-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="carousel-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </section>
+
+            <!-- Informações do Produto -->
+            <section class="mt-8">
+                <h1 id="productName" class="text-3xl font-bold"></h1>
+                <p id="productPrice" class="text-2xl font-bold mt-2"></p>
+                <p id="productSize" class="text-gray-600 mt-2"></p>
+                <p id="productInstallments" class="text-gray-600 mt-2"></p>
+            </section>
+        </main>
+
+        <!-- Importação do Supabase via CDN -->
+        <script
+            src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.12.0/+esm"
+            type="module"
+        ></script>
+
+        <!-- Script principal -->
+        <script type="module">
+            // Importa a função createClient do Supabase
+            import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.12.0/+esm";
+
+            // Configuração do Supabase
+            const supabaseUrl = "https://akpmbgyrnoqvgegwnciz.supabase.co";
+            const supabaseKey =
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrcG1iZ3lybm9xdmdlZ3duY2l6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ2NzE5NDAsImV4cCI6MjA1MDI0Nzk0MH0.mbN5DB16tfc_iQ6-chS2dUI7-0wc23KWQB-TcWib4t8";
+            const supabase = createClient(supabaseUrl, supabaseKey);
+
+            // Função para carregar os detalhes do produto
+            async function loadProductDetails() {
+                // Obtém o ID do produto da URL
+                const params = new URLSearchParams(window.location.search);
+                const productId = params.get("id");
+
+                if (!productId) {
+                    console.error("ID do produto não encontrado na URL.");
+                    return;
+                }
+
+                console.log("ID do produto:", productId); // Debug
+
+                // Busca os detalhes do produto no Supabase
+                const { data: product, error } = await supabase
+                    .from("produtos")
+                    .select("*")
+                    .eq("id", productId)
+                    .single();
+
+                if (error) {
+                    console.error("Erro ao buscar produto:", error);
+                    return;
+                }
+
+                console.log("Produto encontrado:", product); // Debug
+
+                // Exibe as informações do produto
+                document.getElementById("productName").textContent =
+                    product.nome;
+                document.getElementById("productPrice").textContent =
+                    `R$${parseFloat(product.preco).toFixed(2)}`;
+                document.getElementById("productSize").textContent =
+                    `Tamanho: ${product.tamanho}`;
+                document.getElementById("productInstallments").textContent =
+                    `6x de R$${(parseFloat(product.preco) / 6).toFixed(2)} sem juros`;
+
+                // Exibe as imagens do produto no carrossel
+                const carouselTrack =
+                    document.getElementById("productCarousel");
+                const images = product.imagens_url
+                    ? product.imagens_url.split(", ")
+                    : [product.imagem_url];
+                carouselTrack.innerHTML = images
+                    .map(
+                        (image) => `
+                        <div class="w-full">
+                            <img src="${image}" alt="${product.nome}" />
+                        </div>
+                    `,
+                    )
+                    .join("");
+            }
+
+            // Carrega os detalhes do produto ao carregar a página
+            document.addEventListener("DOMContentLoaded", loadProductDetails);
+        </script>
+
+        <!-- Script para o carrossel -->
+        <script>
+            // Variáveis globais
+            let currentIndex = 0; // Índice atual do carrossel
+            const carouselTrack = document.querySelector(".carousel-track");
+            const slides = document.querySelectorAll(".carousel-track > div");
+            const totalSlides = slides.length;
+
+            // Função para atualizar a posição do carrossel
+            function updateCarousel() {
+                const offset = -currentIndex * 100; // Calcula o deslocamento
+                carouselTrack.style.transform = `translateX(${offset}%)`;
+            }
+
+            // Função para avançar para o próximo slide
+            function nextSlide() {
+                if (currentIndex < totalSlides - 1) {
+                    currentIndex++;
+                } else {
+                    currentIndex = 0; // Volta para o primeiro slide
+                }
+                updateCarousel();
+            }
+
+            // Evento para o botão "Anterior"
+            document
+                .querySelector(".carousel-prev")
+                .addEventListener("click", () => {
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                    } else {
+                        currentIndex = totalSlides - 1; // Volta para o último slide
+                    }
+                    updateCarousel();
+                });
+
+            // Evento para o botão "Próximo"
+            document
+                .querySelector(".carousel-next")
+                .addEventListener("click", () => {
+                    nextSlide();
+                });
+
+            // Inicializa o carrossel
+            updateCarousel();
+
+            // Autoplay: Passa para o próximo slide a cada 12 segundos
+            setInterval(nextSlide, 12000); // 12000ms = 12s
+        </script>
+
+        <!-- Script para exibir/ocultar a caixa de busca -->
+        <script>
+            document
+                .getElementById("searchIcon")
+                .addEventListener("click", function () {
+                    let searchBox = document.getElementById("searchBox");
+                    searchBox.classList.toggle("hidden");
+                });
+        </script>
+    </body>
+</html>
