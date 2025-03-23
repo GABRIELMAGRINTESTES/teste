@@ -22,7 +22,7 @@
             /* Estilos personalizados para o carrossel */
             .carousel-container {
                 width: 100%;
-                max-width: 1200px;
+                max-width: 500px; /* Tamanho máximo do carrossel */
                 margin: 0 auto;
                 position: relative;
                 overflow: hidden;
@@ -83,6 +83,10 @@
             }
 
             @media (max-width: 768px) {
+                .carousel-container {
+                    max-width: 100%; /* Ocupa toda a largura no mobile */
+                }
+
                 .carousel-prev,
                 .carousel-next {
                     padding: 4px;
@@ -139,27 +143,44 @@
 
         <!-- CONTEÚDO PRINCIPAL (DETALHES DO PRODUTO) -->
         <main class="p-4">
-            <!-- Carrossel de Imagens do Produto -->
-            <section class="carousel-container">
-                <div class="carousel-track" id="productCarousel">
-                    <!-- Imagens do produto serão injetadas aqui via JavaScript -->
-                </div>
-                <!-- Botões de navegação -->
-                <button class="carousel-prev">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="carousel-next">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </section>
+            <div class="container mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Carrossel de Imagens do Produto -->
+                    <section class="carousel-container">
+                        <div class="carousel-track" id="productCarousel">
+                            <!-- Imagens do produto serão injetadas aqui via JavaScript -->
+                        </div>
+                        <!-- Botões de navegação -->
+                        <button class="carousel-prev">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="carousel-next">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </section>
 
-            <!-- Informações do Produto -->
-            <section class="mt-8">
-                <h1 id="productName" class="text-3xl font-bold"></h1>
-                <p id="productPrice" class="text-2xl font-bold mt-2"></p>
-                <p id="productSize" class="text-gray-600 mt-2"></p>
-                <p id="productInstallments" class="text-gray-600 mt-2"></p>
-            </section>
+                    <!-- Informações do Produto -->
+                    <section class="mt-8 md:mt-0">
+                        <h1 id="productName" class="text-3xl font-bold"></h1>
+                        <p
+                            id="productPrice"
+                            class="text-2xl font-bold mt-2"
+                        ></p>
+                        <p
+                            id="productInstallments"
+                            class="text-gray-600 mt-2"
+                        ></p>
+                        <p id="productSize" class="text-gray-600 mt-2"></p>
+
+                        <!-- Botão de compra -->
+                        <button
+                            class="bg-black text-white px-6 py-2 rounded-full mt-4"
+                        >
+                            COMPRAR
+                        </button>
+                    </section>
+                </div>
+            </div>
         </main>
 
         <!-- Importação do Supabase via CDN -->
@@ -220,80 +241,86 @@
                 const carouselTrack =
                     document.getElementById("productCarousel");
                 const images = product.imagens_url
-                    ? product.imagens_url.split(", ")
-                    : [product.imagem_url];
-                carouselTrack.innerHTML = images
-                    .map(
-                        (image) => `
-                        <div class="w-full">
-                            <img src="${image}" alt="${product.nome}" />
-                        </div>
-                    `,
-                    )
-                    .join("");
+                    ? product.imagens_url.split(",").map((url) => url.trim()) // Divide as URLs e remove espaços
+                    : [product.imagem_url]; // Fallback para uma única imagem
+
+                // Limpa o carrossel antes de adicionar novas imagens
+                carouselTrack.innerHTML = "";
+
+                // Adiciona as imagens ao carrossel
+                images.forEach((image) => {
+                    const slide = document.createElement("div");
+                    slide.className = "w-full";
+                    slide.innerHTML = `<img src="${image}" alt="${product.nome}" class="w-full" />`;
+                    carouselTrack.appendChild(slide);
+                });
+
+                // Inicializa o carrossel após adicionar as imagens
+                initializeCarousel();
+            }
+
+            // Função para inicializar o carrossel
+            function initializeCarousel() {
+                const carouselTrack = document.querySelector(".carousel-track");
+                const slides = document.querySelectorAll(
+                    ".carousel-track > div",
+                );
+                const totalSlides = slides.length;
+                let currentIndex = 0;
+
+                // Função para atualizar a posição do carrossel
+                function updateCarousel() {
+                    const offset = -currentIndex * 100; // Calcula o deslocamento
+                    carouselTrack.style.transform = `translateX(${offset}%)`;
+                }
+
+                // Função para avançar para o próximo slide
+                function nextSlide() {
+                    if (currentIndex < totalSlides - 1) {
+                        currentIndex++;
+                    } else {
+                        currentIndex = 0; // Volta para o primeiro slide
+                    }
+                    updateCarousel();
+                }
+
+                // Evento para o botão "Anterior"
+                document
+                    .querySelector(".carousel-prev")
+                    .addEventListener("click", () => {
+                        if (currentIndex > 0) {
+                            currentIndex--;
+                        } else {
+                            currentIndex = totalSlides - 1; // Volta para o último slide
+                        }
+                        updateCarousel();
+                    });
+
+                // Evento para o botão "Próximo"
+                document
+                    .querySelector(".carousel-next")
+                    .addEventListener("click", () => {
+                        nextSlide();
+                    });
+
+                // Inicializa o carrossel
+                updateCarousel();
+
+                // Autoplay: Passa para o próximo slide a cada 12 segundos
+                setInterval(nextSlide, 12000); // 12000ms = 12s
             }
 
             // Carrega os detalhes do produto ao carregar a página
             document.addEventListener("DOMContentLoaded", loadProductDetails);
         </script>
 
-        <!-- Script para o carrossel -->
-        <script>
-            // Variáveis globais
-            let currentIndex = 0; // Índice atual do carrossel
-            const carouselTrack = document.querySelector(".carousel-track");
-            const slides = document.querySelectorAll(".carousel-track > div");
-            const totalSlides = slides.length;
-
-            // Função para atualizar a posição do carrossel
-            function updateCarousel() {
-                const offset = -currentIndex * 100; // Calcula o deslocamento
-                carouselTrack.style.transform = `translateX(${offset}%)`;
-            }
-
-            // Função para avançar para o próximo slide
-            function nextSlide() {
-                if (currentIndex < totalSlides - 1) {
-                    currentIndex++;
-                } else {
-                    currentIndex = 0; // Volta para o primeiro slide
-                }
-                updateCarousel();
-            }
-
-            // Evento para o botão "Anterior"
-            document
-                .querySelector(".carousel-prev")
-                .addEventListener("click", () => {
-                    if (currentIndex > 0) {
-                        currentIndex--;
-                    } else {
-                        currentIndex = totalSlides - 1; // Volta para o último slide
-                    }
-                    updateCarousel();
-                });
-
-            // Evento para o botão "Próximo"
-            document
-                .querySelector(".carousel-next")
-                .addEventListener("click", () => {
-                    nextSlide();
-                });
-
-            // Inicializa o carrossel
-            updateCarousel();
-
-            // Autoplay: Passa para o próximo slide a cada 12 segundos
-            setInterval(nextSlide, 12000); // 12000ms = 12s
-        </script>
-
-        <!-- Script para exibir/ocultar a caixa de busca -->
+        <!-- Script para redirecionar para o index.html com a caixa de busca aberta -->
         <script>
             document
                 .getElementById("searchIcon")
                 .addEventListener("click", function () {
-                    let searchBox = document.getElementById("searchBox");
-                    searchBox.classList.toggle("hidden");
+                    // Redireciona para o index.html com o parâmetro ?search=open
+                    window.location.href = "index.html?search=open";
                 });
         </script>
     </body>

@@ -220,5 +220,14 @@
                     searchBox.classList.toggle("hidden");
                 });
         </script>
+        <!-- Script para abrir a caixa de busca automaticamente -->
+        <script>
+            // Verifica se o parâmetro search=open está na URL
+            const params = new URLSearchParams(window.location.search);
+            if (params.get("search") === "open") {
+                // Abre a caixa de busca
+                document.getElementById("searchBox").classList.remove("hidden");
+            }
+        </script>
     </body>
 </html>
