@@ -7,6 +7,7 @@
     margin: 0 auto;
     position: relative;
     overflow: hidden;
+    /* Garante que o excesso das imagens seja oculto */
 }
 
 .carousel-track {
@@ -14,7 +15,7 @@
     transition: transform 0.5s ease-in-out;
 }
 
-.carousel-track > div {
+.carousel-track>div {
     flex: 0 0 100%;
     /* Cada slide ocupa 100% da largura do contêiner */
     width: 100%;
@@ -23,6 +24,8 @@
     /* Centraliza a imagem horizontalmente */
     align-items: center;
     /* Centraliza a imagem verticalmente */
+    overflow: hidden;
+    /* Garante que o excesso da imagem seja oculto */
 }
 
 .carousel-track img {
@@ -44,17 +47,13 @@
     border: none;
     cursor: pointer;
     padding: 6px;
-    /* Reduz o padding para diminuir o tamanho dos botões */
     font-size: 14px;
-    /* Reduz o tamanho da fonte */
     color: white;
     transition: background-color 0.3s ease;
     z-index: 10;
     /* Garante que os botões fiquem acima das imagens */
     width: 30px;
-    /* Define uma largura fixa menor para os botões */
     height: 30px;
-    /* Define uma altura fixa menor para os botões */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -69,32 +68,38 @@
 
 .carousel-prev {
     left: 20px;
-    /* Aumenta a distância da borda esquerda */
+    /* Distância da borda esquerda */
 }
 
 .carousel-next {
     right: 20px;
-    /* Aumenta a distância da borda direita */
+    /* Distância da borda direita */
 }
 
 /* Estilos específicos para mobile (telas menores que 768px) */
 @media (max-width: 768px) {
+    .carousel-track>div {
+        flex: 0 0 100%;
+        /* Garante que cada slide ocupe 100% da largura */
+    }
+
     .carousel-track img {
-        width: 200%; /* Dobra o tamanho da imagem */
-        height: auto; /* Mantém a proporção */
-        transform: translateX(-25%); /* Centraliza a imagem */
+        width: 200%;
+        /* Dobra o tamanho da imagem */
+        height: auto;
+        /* Mantém a proporção */
+        transform: translateX(-25%);
+        /* Centraliza a imagem */
+        margin-left: 50%;
+        /* Ajusta a centralização */
     }
 
     .carousel-prev,
     .carousel-next {
         padding: 2px;
-        /* Padding menor para mobile */
         font-size: 6px;
-        /* Fonte menor para mobile */
         width: 12px;
-        /* Largura menor para mobile */
         height: 12px;
-        /* Altura menor para mobile */
     }
 
     .carousel-prev {
