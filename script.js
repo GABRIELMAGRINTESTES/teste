@@ -7,8 +7,8 @@ const supabaseKey =
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Variáveis globais
+let allProducts = []; // Armazenar todos os produtos
 let currentCategory = "camisas";
-let displayedProducts = [];
 
 // Função para buscar produtos do Supabase
 async function fetchProducts() {
@@ -17,7 +17,7 @@ async function fetchProducts() {
         console.error("Erro ao buscar produtos:", error);
         return [];
     }
-    return data.map((product) => ({
+    allProducts = data.map((product) => ({
         id: product.id,
         name: product.nome,
         price: `R$${parseFloat(product.preco).toFixed(2)}`,
@@ -31,11 +31,12 @@ async function fetchProducts() {
 // Função para carregar produtos por categoria
 async function loadProductsByCategory(category) {
     currentCategory = category;
-    const products = await fetchProducts();
-    const filteredProducts = products
+    const filteredProducts = allProducts
         .filter((product) => product.category === category)
         .sort((a, b) => a.name.localeCompare(b.name)); // Ordena por ordem alfabética
 
+    // Atualiza o título da categoria
+    document.getElementById("categoryTitle").textContent = category.charAt(0).toUpperCase() + category.slice(1);
     displayProducts(filteredProducts);
 }
 
@@ -57,7 +58,9 @@ function displayProducts(products) {
         const productItem = `
             <div class="border rounded-lg overflow-hidden">
                 <div class="relative">
-                    <img src="${product.images.length > 0 ? product.images[0] : product.image}" alt="${product.name}" class="w-full">
+                    <img src="${product.images.length > 0 ? product.images[0] : product.image}" 
+                        alt="Imagem de ${product.name}" 
+                        class="w-full">
                     <button class="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded-full">
                         <i class="fas fa-shopping-bag"></i>
                     </button>
@@ -75,25 +78,20 @@ function displayProducts(products) {
 
 // Função para buscar itens na barra de pesquisa
 function searchItems(event) {
-    event.preventDefault(); // Evita o recarregamento da página
+    event.preventDefault();
     const query = document.getElementById("searchInput").value.toLowerCase();
-    fetchProducts()
-        .then((products) => {
-            const filteredProducts = products.filter(
-                (product) => product.name.toLowerCase().includes(query), // Busca pelo nome do produto
-            );
-            displayProducts(filteredProducts);
-        })
-        .catch((error) => {
-            console.error("Erro ao buscar produtos:", error);
-        });
+    const filteredProducts = allProducts.filter(
+        (product) => product.name.toLowerCase().includes(query) // Busca pelo nome do produto
+    );
+    displayProducts(filteredProducts);
 }
 
 // Adicionar evento de busca ao campo de pesquisa
 document.getElementById("searchInput").addEventListener("input", searchItems);
 
 // Carregar produtos da categoria "camisas" ao iniciar a página
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+    await fetchProducts(); // Carrega os produtos
     loadProductsByCategory("camisas"); // Carrega a categoria "camisas" por padrão
 });
 
