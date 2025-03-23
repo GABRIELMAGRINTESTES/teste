@@ -56,6 +56,11 @@ function displayProducts(products) {
     }
 
     products.forEach((product) => {
+        // Cálculo do valor parcelado com 8% de acréscimo
+        const valorComAcrescimo =
+            parseFloat(product.price.replace("R$", "")) * 1.08; // Adiciona 8%
+        const valorParcela = (valorComAcrescimo / 6).toFixed(2); // Divide em 6x
+
         const productItem = `
             <div class="border rounded-lg overflow-hidden">
                 <div class="relative">
@@ -69,7 +74,7 @@ function displayProducts(products) {
                 <div class="p-4 text-center">
                     <h2 class="text-lg font-semibold">${product.name}</h2>
                     <p class="text-xl font-bold">${product.price}</p>
-                    <p class="text-sm text-gray-500">6 x de <span class="text-blue-600">R$${(parseFloat(product.price.replace("R$", "")) / 6).toFixed(2)}</span> sem juros</p>
+                    <p class="text-sm text-gray-500">6 x de <span class="text-blue-600">R$${valorParcela}</span></p>
                 </div>
             </div>
         `;
@@ -131,8 +136,14 @@ async function loadProductDetails() {
         `R$${parseFloat(product.preco).toFixed(2)}`;
     document.getElementById("productSize").textContent =
         `Tamanho: ${product.tamanho}`;
+
+    // Calcula o valor parcelado com 8% de acréscimo
+    const valorComAcrescimo = parseFloat(product.preco) * 1.08; // Adiciona 8%
+    const valorParcela = (valorComAcrescimo / 6).toFixed(2); // Divide em 6x
+
+    // Exibe o valor das parcelas
     document.getElementById("productInstallments").textContent =
-        `6x de R$${(parseFloat(product.preco) / 6).toFixed(2)} sem juros`;
+        `6x de R$${valorParcela}`; // Remove "sem juros"
 
     // Exibe as imagens do produto no carrossel
     const carouselTrack = document.getElementById("productCarousel");

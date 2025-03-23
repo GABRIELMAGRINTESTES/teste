@@ -373,44 +373,5 @@
                     displayProducts(filteredProducts);
                 });
         </script>
-
-        <!-- Script para exibir o balão "Pronta Entrega" -->
-        <script>
-            function displayProducts(products) {
-                const productGrid = document.getElementById("productGrid");
-                productGrid.innerHTML = ""; // Limpa o conteúdo atual
-
-                products.forEach((product) => {
-                    const productCard = document.createElement("div");
-                    productCard.className = "relative";
-
-                    if (product.category === "pronta entrega") {
-                        const balao = document.createElement("div");
-                        balao.className = "pronta-entrega-balao";
-                        balao.textContent = "Pronta Entrega";
-                        productCard.appendChild(balao);
-                    }
-
-                    const productImage = document.createElement("img");
-                    productImage.src = product.image;
-                    productImage.alt = product.name;
-                    productImage.className = "w-full";
-
-                    const productName = document.createElement("h3");
-                    productName.textContent = product.name;
-                    productName.className = "text-center mt-2";
-
-                    const productPrice = document.createElement("p");
-                    productPrice.textContent = `R$ ${product.price.toFixed(2)}`;
-                    productPrice.className = "text-center text-gray-700";
-
-                    productCard.appendChild(productImage);
-                    productCard.appendChild(productName);
-                    productCard.appendChild(productPrice);
-
-                    productGrid.appendChild(productCard);
-                });
-            }
-        </script>
     </body>
 </html>
