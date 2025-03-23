@@ -112,3 +112,29 @@
         /* Distância menor da borda direita */
     }
 }
+
+/* Fixa o cabeçalho no topo da tela */
+header {
+    position: fixed; /* Fixa o cabeçalho */
+    top: 0; /* Coloca no topo da tela */
+    left: 0; /* Alinha à esquerda */
+    width: 100%; /* Ocupa 100% da largura */
+    background-color: white; /* Cor de fundo (ajuste conforme necessário) */
+    z-index: 1000; /* Garante que o cabeçalho fique acima de outros elementos */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para destacar */
+}
+
+/* Fixa o menu de navegação abaixo do cabeçalho */
+nav {
+    position: fixed;
+    top: 64px; /* Ajuste conforme a altura do cabeçalho */
+    left: 0;
+    width: 100%;
+    background-color: #1e40af; /* Cor de fundo do menu */
+    z-index: 999; /* Fica abaixo do cabeçalho */
+}
+
+/* Ajusta o conteúdo principal para não ficar escondido atrás do cabeçalho fixo */
+main {
+    padding-top: 128px; /* Ajuste conforme a altura do cabeçalho + menu */
+}
