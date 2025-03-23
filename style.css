@@ -1,0 +1,108 @@
+/* Estilos do modal de detalhes */
+/* Estilos do modal de detalhes */
+#detailsModal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+#detailsModalContent {
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 8px;
+    max-width: 90%;
+    width: 300px;
+    /* Largura reduzida */
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+#detailsModalContent h2 {
+    font-size: 1.1rem;
+    /* Tamanho reduzido */
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    color: #1a1a1a;
+}
+
+#detailsModalContent p {
+    font-size: 0.8rem;
+    /* Tamanho reduzido */
+    margin-bottom: 0.4rem;
+    color: #333;
+}
+
+#detailsModalContent .images-container {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.8rem;
+    flex-wrap: wrap;
+}
+
+#detailsModalContent .images-container img {
+    width: 50px;
+    /* Tamanho reduzido */
+    height: 50px;
+    /* Tamanho reduzido */
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#detailsModalContent .images-container img:hover {
+    transform: scale(1.1);
+}
+
+#detailsModalContent button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    /* Tamanho reduzido */
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    /* Tamanho reduzido */
+    margin-top: 0.8rem;
+    transition: background-color 0.2s;
+}
+
+#detailsModalContent button:hover {
+    background-color: #0056b3;
+}
+
+/* Botão de fechar */
+#detailsModalContent .close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 1.2rem;
+    /* Tamanho reduzido */
+    color: #666;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+#detailsModalContent .close:hover {
+    color: #1a1a1a;
+}
+
+/* Estilo do logo do Instagram */
+.instagram-logo {
+    width: 10px;
+    /* Tamanho reduzido */
+    height: 10ch;
+    /* Tamanho reduzido */
+    border-radius: 50%;
+    margin-top: 0.5rem;
+}
