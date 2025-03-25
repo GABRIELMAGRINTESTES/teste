@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="pt">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Conheça mais sobre a Magrin Store - Especializada em produtos esportivos importados de qualidade"
+        />
+        <title>Sobre Nós - Magrin Store</title>
+        <link rel="stylesheet" href="style.css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            /* Estilos personalizados para o menu */
+            .menu {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 250px;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                z-index: 1000;
+                padding: 20px;
+                color: white;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            }
+            .menu.open {
+                display: block;
+            }
+            .menu ul {
+                list-style: none;
+                padding: 0;
+            }
+            .menu ul li {
+                margin: 15px 0;
+            }
+            .menu ul li a {
+                color: white;
+                text-decoration: none;
+                font-size: 18px;
+            }
+            .menu ul li a:hover {
+                color: #ccc;
+            }
+            .submenu {
+                display: none;
+                margin-left: 20px;
+            }
+            .submenu.open {
+                display: block;
+            }
+            .close-button {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+            }
+            .feature-icon {
+                width: 60px;
+                height: 60px;
+                background-color: #1e40af;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 15px;
+                color: white;
+                font-size: 24px;
+            }
+        </style>
+    </head>
+    <body class="bg-white text-black">
+        <!-- HEADER -->
+        <header class="flex items-center justify-between p-4 border-b">
+            <!-- Ícone do menu -->
+            <button id="menuButton" class="text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Nome da loja -->
+            <h1 class="text-2xl font-bold">
+                <a href="index.html" class="text-black hover:text-gray-600">
+                    MAGRIN STORE
+                </a>
+            </h1>
+
+            <!-- Ícone da lupa (ao clicar, exibe a caixa de busca) -->
+            <button id="searchIcon" class="text-2xl">
+                <i class="fas fa-search"></i>
+            </button>
+        </header>
+
+        <!-- MENU DE NAVEGAÇÃO -->
+        <div id="menu" class="menu">
+            <button class="close-button" id="closeMenuButton">
+                <i class="fas fa-times"></i>
+            </button>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li>
+                    <a href="#" id="produtosMenu"
+                        >Produtos <i class="fas fa-chevron-down"></i
+                    ></a>
+                    <ul id="produtosSubmenu" class="submenu">
+                        <li>
+                            <a href="index.html?category=camisas">Camisas</a>
+                        </li>
+                        <li><a href="index.html?category=tenis">Tênis</a></li>
+                        <li>
+                            <a href="index.html?category=jaquetas">Jaquetas</a>
+                        </li>
+                        <li>
+                            <a href="index.html?category=outros"
+                                >Outros Itens</a
+                            >
+                        </li>
+                        <li>
+                            <a href="index.html?category=pronta-entrega"
+                                >Pronta Entrega</a
+                            >
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="sobre.html">Quem Somos</a></li>
+                <li><a href="contatos.html">Contatos</a></li>
+            </ul>
+        </div>
+
+        <!-- Caixa de busca (inicialmente oculta) -->
+        <div id="searchBox" class="hidden p-4 border-b">
+            <div class="relative w-full max-w-md mx-auto">
+                <input
+                    class="border rounded-full pl-4 pr-10 py-2 w-full"
+                    id="searchInput"
+                    placeholder="Buscar"
+                    type="text"
+                />
+                <button
+                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                >
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="p-4 max-w-4xl mx-auto">
+            <section class="mb-12 text-center">
+                <h1 class="text-4xl font-bold mb-4">Quem Somos</h1>
+                <p class="text-xl text-gray-700 max-w-2xl mx-auto">
+                    Especialistas em produtos esportivos importados de alta
+                    qualidade e itens exclusivos sob encomenda
+                </p>
+            </section>
+
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold mb-8 text-center">
+                    Nossos Diferenciais
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="text-center p-6 bg-gray-50 rounded-lg">
+                        <div class="feature-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">
+                            Produtos Importados
+                        </h3>
+                        <p>
+                            Itens diretamente dos principais mercados
+                            internacionais.
+                        </p>
+                    </div>
+                    <div class="text-center p-6 bg-gray-50 rounded-lg">
+                        <div class="feature-icon">
+                            <i class="fas fa-clipboard-check"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Pronta Entrega</h3>
+                        <p>
+                            Alguns produtos estarão te esperando em estoque!
+                        </p>
+                    </div>
+                    <div class="text-center p-6 bg-gray-50 rounded-lg">
+                        <div class="feature-icon">
+                            <i class="fas fa-box-open"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">
+                            Encomendas Especiais
+                        </h3>
+                        <p>
+                            Serviço personalizado para trazer produtos
+                            específicos conforme demanda dos clientes.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-16">
+                <h2 class="text-3xl font-bold mb-6 text-center">
+                    Nossos Produtos
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-gray-100 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-3">Linha Premium</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i
+                                    class="fas fa-check text-blue-600 mt-1 mr-2"
+                                ></i>
+                                <span>Tênis esportivos </span>
+                            </li>
+                            <li class="flex items-start">
+                                <i
+                                    class="fas fa-check text-blue-600 mt-1 mr-2"
+                                ></i>
+                                <span
+                                    >Bonés e acessórios de edições
+                                    limitadas</span
+                                >
+                            </li>
+
+                            <li class="flex items-start">
+                                <i
+                                    class="fas fa-check text-blue-600 mt-1 mr-2"
+                                ></i>
+                                <span
+                                    >Coleções completas de uniformes
+                                    esportivos</span
+                                >
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bg-gray-100 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-3">
+                            Serviço de Encomenda
+                        </h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <i
+                                    class="fas fa-check text-blue-600 mt-1 mr-2"
+                                ></i>
+                                <span
+                                    >Busca por produtos específicos no mercado
+                                    internacional</span
+                                >
+                            </li>
+                            <li class="flex items-start">
+                                <i
+                                    class="fas fa-check text-blue-600 mt-1 mr-2"
+                                ></i>
+                                <span>Orientação sobre tamanhos e modelos</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i
+                                    class="fas fa-check text-blue-600 mt-1 mr-2"
+                                ></i>
+                                <span
+                                    >Previsão de entrega e acompanhamento</span
+                                >
+                            </li>
+                            <li class="flex items-start">
+                                <i
+                                    class="fas fa-check text-blue-600 mt-1 mr-2"
+                                ></i>
+                                <span>Suporte pós-venda</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-blue-700 text-white p-8 rounded-lg text-center">
+                <h2 class="text-2xl font-bold mb-4">Quer algo específico?</h2>
+                <p class="mb-6 text-lg">
+                    Nossa equipe está pronta para ajudar a encontrar exatamente
+                    o produto que você deseja.
+                </p>
+                <a
+                    href="contatos.html"
+                    class="bg-white text-blue-700 font-bold py-3 px-6 rounded-full inline-block hover:bg-gray-100 transition"
+                >
+                    Fale Conosco
+                </a>
+            </section>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="bg-gray-700 text-white text-center p-4 mt-4">
+            <p>© 2025 Magrin Store - Todos os direitos reservados</p>
+        </footer>
+
+        <!-- Script para redirecionar para o index.html com a caixa de busca aberta -->
+        <script>
+            document
+                .getElementById("searchIcon")
+                .addEventListener("click", function () {
+                    window.location.href = "index.html?search=open";
+                });
+        </script>
+
+        <!-- Script para o menu -->
+        <script>
+            document
+                .getElementById("menuButton")
+                .addEventListener("click", function () {
+                    const menu = document.getElementById("menu");
+                    menu.classList.toggle("open");
+                });
+
+            document
+                .getElementById("closeMenuButton")
+                .addEventListener("click", function () {
+                    const menu = document.getElementById("menu");
+                    menu.classList.remove("open");
+                });
+
+            document
+                .getElementById("produtosMenu")
+                .addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const submenu = document.getElementById("produtosSubmenu");
+                    submenu.classList.toggle("open");
+                });
+        </script>
+    </body>
+</html>
