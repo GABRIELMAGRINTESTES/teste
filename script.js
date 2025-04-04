@@ -19,7 +19,7 @@ async function fetchProducts() {
             id: product.id,
             name: product.nome,
             price: `R$${parseFloat(product.preco).toFixed(2)}`,
-            rawPrice: parseFloat(product.preco),
+            rawPrice: parseFloat(product.preco), // Armazena o valor numérico para cálculos
             size: product.tamanho,
             image: product.imagem_url,
             images: product.imagens_url ? product.imagens_url.split(", ") : [],
@@ -61,28 +61,23 @@ async function createCategoryCarousels() {
                 <div class="carousel-container">
                     <div class="carousel-track" id="${carouselId}">
                         ${products.slice(0, 10).map(product => {
+                            // Cálculo correto: (valor + 8%) dividido por 6 parcelas
                             const valorComAcrescimo = product.rawPrice * 1.08;
                             const valorParcela = (valorComAcrescimo / 6).toFixed(2);
                             
                             return `
-                            <div class="product-card border rounded-lg overflow-hidden relative hover:shadow-md transition-shadow cursor-pointer" data-id="${product.id}">
-                                ${product.readyToShip ?
-                                    '<div class="pronta-entrega-balao">Pronta Entrega</div>' :
-                                    ''}
-                                <div class="relative">
+                            <div class="product-card">
+                                <div class="product-card-image">
+                                    ${product.readyToShip ?
+                                        '<span class="ready-to-ship">Pronta Entrega</span>' : ''}
                                     <img src="${product.images[0] || product.image}" 
                                          alt="${product.name}" 
-                                         class="w-full h-48 object-cover"
                                          loading="lazy">
-                                    <button class="absolute bottom-2 right-2 bg-black text-white p-2 rounded-full hover:bg-gray-800 transition" 
-                                            aria-label="Comprar ${product.name}">
-                                        <i class="fas fa-shopping-bag"></i>
-                                    </button>
                                 </div>
-                                <div class="p-4 text-center">
-                                    <h2 class="text-lg font-semibold truncate">${product.name}</h2>
-                                    <p class="text-xl font-bold">${product.price}</p>
-                                    <p class="text-sm text-gray-500">6x de <span class="text-blue-600">R$${valorParcela}</span></p>
+                                <div class="product-card-content">
+                                    <h4>${product.name}</h4>
+                                    <p class="price">${product.price}</p>
+                                    <p class="installments">6x de R$${valorParcela}</p>
                                 </div>
                             </div>
                             `;
@@ -100,23 +95,17 @@ async function createCategoryCarousels() {
 
         container.appendChild(carouselSection);
         initCategoryCarousel(carouselId, carouselSection);
-
-        // Event listeners para os produtos
-        carouselSection.querySelectorAll('.product-card').forEach(card => {
-            const productId = card.getAttribute('data-id');
-            
-            // Botão de compra
-            card.querySelector('button').addEventListener('click', (e) => {
-                e.stopPropagation();
-                window.location.href = `produto.html?id=${productId}`;
-            });
-            
-            // Card inteiro
-            card.addEventListener('click', () => {
-                window.location.href = `produto.html?id=${productId}`;
-            });
-        });
     }
+
+    document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const productId = card.querySelector('button')?.getAttribute('data-id') || 
+                            card.closest('[data-id]')?.getAttribute('data-id');
+            if (productId) {
+                window.location.href = `produto.html?id=${productId}`;
+            }
+        });
+    });
 }
 
 function initCategoryCarousel(carouselId, container) {
