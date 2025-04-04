@@ -66,7 +66,7 @@ async function createCategoryCarousels() {
                             const valorParcela = (valorComAcrescimo / 6).toFixed(2);
                             
                             return `
-                            <div class="product-card">
+                            <div class="product-card" data-id="${product.id}">
                                 <div class="product-card-image">
                                     ${product.readyToShip ?
                                         '<span class="ready-to-ship">Pronta Entrega</span>' : ''}
@@ -97,14 +97,13 @@ async function createCategoryCarousels() {
         initCategoryCarousel(carouselId, carouselSection);
     }
 
-    document.querySelectorAll('.product-card').forEach(card => {
-        card.addEventListener('click', () => {
-            const productId = card.querySelector('button')?.getAttribute('data-id') || 
-                            card.closest('[data-id]')?.getAttribute('data-id');
-            if (productId) {
-                window.location.href = `produto.html?id=${productId}`;
-            }
-        });
+    // Adiciona evento de clique para todos os cards de produto
+    document.addEventListener('click', function(e) {
+        const productCard = e.target.closest('.product-card');
+        if (productCard) {
+            const productId = productCard.getAttribute('data-id');
+            window.location.href = `produto.html?id=${productId}`;
+        }
     });
 }
 
