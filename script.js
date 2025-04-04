@@ -79,6 +79,7 @@ async function createCategoryCarousels() {
                                 <div class="p-4">
                                     <h4 class="font-semibold truncate">${product.name}</h4>
                                     <p class="font-bold text-lg">${product.price}</p>
+                                    <p class="text-sm text-gray-600">6x de R$${(parseFloat(product.price.replace('R$', '')) / 6).toFixed(2)}</p>
                                 </div>
                             </div>
                         `).join('')}
@@ -90,7 +91,7 @@ async function createCategoryCarousels() {
             </div>
             <div class="text-center mt-2">
                 <a href="categorias.html?category=${encodeURIComponent(category)}" class="text-blue-600 hover:underline">
-                    Ver Mais
+                    Ver todos os ${category.toLowerCase()}
                 </a>
             </div>
         `;
@@ -111,40 +112,11 @@ function initCategoryCarousel(carouselId, container) {
     const track = container.querySelector(`#${carouselId}`);
     const prevBtn = container.querySelector('.category-prev');
     const nextBtn = container.querySelector('.category-next');
-    const products = container.querySelectorAll('.product-card');
-    const productWidth = products[0].offsetWidth + 16; // Largura do produto + gap
 
-    let currentPosition = 0;
     let isDragging = false;
     let startX;
     let scrollLeft;
 
-    // Calcula quantos produtos são visíveis
-    function getVisibleProductsCount() {
-        return window.innerWidth < 640 ? 3 : 1;
-    }
-
-    // Avança a quantidade certa de produtos baseado no tamanho da tela
-    nextBtn.addEventListener('click', () => {
-        const productsToScroll = getVisibleProductsCount();
-        currentPosition = Math.min(
-            currentPosition + productsToScroll * productWidth,
-            track.scrollWidth - track.offsetWidth
-        );
-        track.scrollTo({ left: currentPosition, behavior: 'smooth' });
-    });
-
-    // Retrocede a quantidade certa de produtos baseado no tamanho da tela
-    prevBtn.addEventListener('click', () => {
-        const productsToScroll = getVisibleProductsCount();
-        currentPosition = Math.max(
-            currentPosition - productsToScroll * productWidth,
-            0
-        );
-        track.scrollTo({ left: currentPosition, behavior: 'smooth' });
-    });
-
-    // Suporte para arrastar com o mouse/touch
     track.addEventListener('mousedown', (e) => {
         isDragging = true;
         startX = e.pageX - track.offsetLeft;
@@ -162,7 +134,6 @@ function initCategoryCarousel(carouselId, container) {
         isDragging = false;
         track.style.cursor = 'grab';
         track.style.scrollBehavior = 'smooth';
-        currentPosition = track.scrollLeft;
     });
 
     track.addEventListener('mousemove', (e) => {
@@ -173,7 +144,6 @@ function initCategoryCarousel(carouselId, container) {
         track.scrollLeft = scrollLeft - walk;
     });
 
-    // Suporte para touch
     track.addEventListener('touchstart', (e) => {
         isDragging = true;
         startX = e.touches[0].pageX - track.offsetLeft;
@@ -184,7 +154,6 @@ function initCategoryCarousel(carouselId, container) {
     track.addEventListener('touchend', () => {
         isDragging = false;
         track.style.scrollBehavior = 'smooth';
-        currentPosition = track.scrollLeft;
     });
 
     track.addEventListener('touchmove', (e) => {
@@ -195,10 +164,27 @@ function initCategoryCarousel(carouselId, container) {
         track.scrollLeft = scrollLeft - walk;
     });
 
-    // Atualiza a posição atual quando o usuário scrolla manualmente
-    track.addEventListener('scroll', () => {
-        currentPosition = track.scrollLeft;
+    prevBtn.addEventListener('click', () => {
+        track.scrollBy({
+            left: -200,
+            behavior: 'smooth'
+        });
     });
+
+    nextBtn.addEventListener('click', () => {
+        track.scrollBy({
+            left: 200,
+            behavior: 'smooth'
+        });
+    });
+
+    const checkNavButtons = () => {
+        prevBtn.style.display = track.scrollLeft <= 0 ? 'none' : 'flex';
+        nextBtn.style.display = track.scrollLeft >= track.scrollWidth - track.clientWidth ? 'none' : 'flex';
+    };
+
+    track.addEventListener('scroll', checkNavButtons);
+    checkNavButtons();
 }
 
 function initMainCarousel() {
@@ -243,7 +229,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await fetchProducts();
     createCategoryCarousels();
 
-    // Busca global
+    // Busca global - redireciona para categorias.html com o termo de busca
     document.getElementById("searchForm")?.addEventListener("submit", (e) => {
         e.preventDefault();
         const query = document.getElementById("searchInput").value.trim();

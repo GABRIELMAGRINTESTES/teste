@@ -1,236 +1,252 @@
 <!doctype html>
 <html lang="pt">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="Entre em contato com a Magrin Store"
+        />
+        <title>Contatos - Magrin Store</title>
+        <link rel="stylesheet" href="style.css" />
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            /* Estilos personalizados para o menu */
+            .menu {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 250px;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.9);
+                z-index: 1000;
+                padding: 20px;
+                color: white;
+                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            }
+            .menu.open {
+                display: block;
+            }
+            .menu ul {
+                list-style: none;
+                padding: 0;
+            }
+            .menu ul li {
+                margin: 15px 0;
+            }
+            .menu ul li a {
+                color: white;
+                text-decoration: none;
+                font-size: 18px;
+            }
+            .menu ul li a:hover {
+                color: #ccc;
+            }
+            .submenu {
+                display: none;
+                margin-left: 20px;
+            }
+            .submenu.open {
+                display: block;
+            }
+            .close-button {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: none;
+                border: none;
+                color: white;
+                font-size: 24px;
+                cursor: pointer;
+            }
+            .contact-icon {
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                margin-right: 15px;
+            }
+        </style>
+    </head>
+    <body class="bg-white text-black">
+        <!-- HEADER -->
+        <header class="flex items-center justify-between p-4 border-b">
+            <!-- Ícone do menu -->
+            <button id="menuButton" class="text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Entre em contato com a Magrin Store" />
-    <title>Contatos - Magrin Store</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
-    <style>
-        /* Estilos personalizados para o menu */
-        .menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 1000;
-            padding: 20px;
-            color: white;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-        }
+            <!-- Nome da loja -->
+            <h1 class="text-2xl font-bold">
+                <a href="index.html" class="text-black hover:text-gray-600">
+                    MAGRIN STORE
+                </a>
+            </h1>
 
-        .menu.open {
-            display: block;
-        }
-
-        .menu ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .menu ul li {
-            margin: 15px 0;
-        }
-
-        .menu ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-        }
-
-        .menu ul li a:hover {
-            color: #ccc;
-        }
-
-        .submenu {
-            display: none;
-            margin-left: 20px;
-        }
-
-        .submenu.open {
-            display: block;
-        }
-
-        .close-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-        }
-
-        .contact-icon {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            margin-right: 15px;
-        }
-    </style>
-</head>
-
-<body class="bg-white text-black">
-    <!-- HEADER -->
-    <header class="flex items-center justify-between p-4 border-b">
-        <!-- Ícone do menu -->
-        <button id="menuButton" class="text-2xl">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <!-- Nome da loja -->
-        <h1 class="text-2xl font-bold">
-            <a href="index.html" class="text-black hover:text-gray-600">
-                MAGRIN STORE
-            </a>
-        </h1>
-
-        <!-- Ícone da lupa (ao clicar, exibe a caixa de busca) -->
-        <button id="searchIcon" class="text-2xl">
-            <i class="fas fa-search"></i>
-        </button>
-    </header>
-
-    <!-- MENU DE NAVEGAÇÃO -->
-    <div id="menu" class="menu">
-        <button class="close-button" id="closeMenuButton">
-            <i class="fas fa-times"></i>
-        </button>
-        <ul>
-            <li><a href="index.html">Início</a></li>
-            <li>
-                <a href="#" id="produtosMenu">Produtos <i class="fas fa-chevron-down"></i></a>
-                <ul id="produtosSubmenu" class="submenu">
-                    <li>
-                        <a href="index.html?category=camisas">Camisas</a>
-                    </li>
-                    <li><a href="index.html?category=tenis">Tênis</a></li>
-                    <li>
-                        <a href="index.html?category=jaquetas">Jaquetas</a>
-                    </li>
-                    <li>
-                        <a href="index.html?category=outros">Outros Itens</a>
-                    </li>
-                    <li>
-                        <a href="index.html?category=pronta-entrega">Pronta Entrega</a>
-                    </li>
-                </ul>
-            </li>
-            <li><a href="quemsomos.html">Quem Somos</a></li>
-            <li><a href="contatos.html">Contatos</a></li>
-        </ul>
-    </div>
-
-    <!-- Caixa de busca (inicialmente oculta) -->
-    <div id="searchBox" class="hidden p-4 border-b">
-        <div class="relative w-full max-w-md mx-auto">
-            <input class="border rounded-full pl-4 pr-10 py-2 w-full" id="searchInput" placeholder="Buscar"
-                type="text" />
-            <button class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500">
+            <!-- Ícone da lupa (ao clicar, exibe a caixa de busca) -->
+            <button id="searchIcon" class="text-2xl">
                 <i class="fas fa-search"></i>
             </button>
+        </header>
+
+        <!-- MENU DE NAVEGAÇÃO -->
+        <div id="menu" class="menu">
+            <button class="close-button" id="closeMenuButton">
+                <i class="fas fa-times"></i>
+            </button>
+            <ul>
+                <li><a href="index.html">Início</a></li>
+                <li>
+                    <a href="#" id="produtosMenu"
+                        >Produtos <i class="fas fa-chevron-down"></i
+                    ></a>
+                    <ul id="produtosSubmenu" class="submenu">
+                        <li>
+                            <a href="index.html?category=camisas">Camisas</a>
+                        </li>
+                        <li><a href="index.html?category=tenis">Tênis</a></li>
+                        <li>
+                            <a href="index.html?category=jaquetas">Jaquetas</a>
+                        </li>
+                        <li>
+                            <a href="index.html?category=outros"
+                                >Outros Itens</a
+                            >
+                        </li>
+                        <li>
+                            <a href="index.html?category=pronta-entrega"
+                                >Pronta Entrega</a
+                            >
+                        </li>
+                    </ul>
+                </li>
+                <li><a href="sobre.html">Quem Somos</a></li>
+                <li><a href="contatos.html">Contatos</a></li>
+            </ul>
         </div>
-    </div>
 
-    <!-- CONTEÚDO PRINCIPAL -->
-    <main class="p-4 max-w-4xl mx-auto">
-        <h2 class="text-3xl font-bold mb-8 text-center">
-            Entre em Contato
-        </h2>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <!-- Informações de Contato -->
-            <section class="bg-gray-100 p-6 rounded-lg shadow-md">
-                <h3 class="text-2xl font-bold mb-4">Nossos Canais</h3>
-
-                <div class="space-y-4">
-                    <div class="flex items-start">
-                        <div class="contact-icon bg-blue-500 text-white">
-                            <i class="fab fa-whatsapp"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold">WhatsApp</h4>
-                            <p>(11) 94933-8591</p>
-                            <a href="https://wa.me/5511949338591" class="text-blue-600 hover:underline">Enviar
-                                mensagem</a>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start">
-                        <div class="contact-icon bg-pink-600 text-white">
-                            <i class="fab fa-instagram"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold">Instagram</h4>
-                            <p>@Magrin_Store</p>
-                            <a href="https://www.instagram.com/magrin_store/" target="_blank"
-                                class="text-blue-600 hover:underline">Visitar perfil</a>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start">
-                        <div class="contact-icon bg-gray-800 text-white">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div>
-                            <h4 class="font-bold">E-mail</h4>
-                            <p>magrinstorecontato@gmail.com</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <!-- Caixa de busca (inicialmente oculta) -->
+        <div id="searchBox" class="hidden p-4 border-b">
+            <div class="relative w-full max-w-md mx-auto">
+                <input
+                    class="border rounded-full pl-4 pr-10 py-2 w-full"
+                    id="searchInput"
+                    placeholder="Buscar"
+                    type="text"
+                />
+                <button
+                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+                >
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
         </div>
-    </main>
 
-    <!-- FOOTER -->
-    <footer class="bg-gray-700 text-white text-center p-4 mt-4">
-        <p>© 2025 Magrin Store</p>
-    </footer>
+        <!-- CONTEÚDO PRINCIPAL -->
+        <main class="p-4 max-w-4xl mx-auto">
+            <h2 class="text-3xl font-bold mb-8 text-center">
+                Entre em Contato
+            </h2>
 
-    <!-- Script para redirecionar para o index.html com a caixa de busca aberta -->
-    <script>
-        document
-            .getElementById("searchIcon")
-            .addEventListener("click", function () {
-                window.location.href = "index.html?search=open";
-            });
-    </script>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Informações de Contato -->
+                <section class="bg-gray-100 p-6 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-bold mb-4">Nossos Canais</h3>
 
-    <!-- Script para o menu -->
-    <script>
-        document
-            .getElementById("menuButton")
-            .addEventListener("click", function () {
-                const menu = document.getElementById("menu");
-                menu.classList.toggle("open");
-            });
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="contact-icon bg-blue-500 text-white">
+                                <i class="fab fa-whatsapp"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">WhatsApp</h4>
+                                <p>(11) 94933-8591</p>
+                                <a
+                                    href="https://wa.me/5511949338591"
+                                    class="text-blue-600 hover:underline"
+                                    >Enviar mensagem</a
+                                >
+                            </div>
+                        </div>
 
-        document
-            .getElementById("closeMenuButton")
-            .addEventListener("click", function () {
-                const menu = document.getElementById("menu");
-                menu.classList.remove("open");
-            });
+                        <div class="flex items-start">
+                            <div class="contact-icon bg-pink-600 text-white">
+                                <i class="fab fa-instagram"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Instagram</h4>
+                                <p>@Magrin_Store</p>
+                                <a
+                                    href="https://www.instagram.com/magrin_store/"
+                                    target="_blank"
+                                    class="text-blue-600 hover:underline"
+                                    >Visitar perfil</a
+                                >
+                            </div>
+                        </div>
 
-        document
-            .getElementById("produtosMenu")
-            .addEventListener("click", function (e) {
-                e.preventDefault();
-                const submenu = document.getElementById("produtosSubmenu");
-                submenu.classList.toggle("open");
-            });
-    </script>
-</body>
+                        <div class="flex items-start">
+                            <div class="contact-icon bg-gray-800 text-white">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">E-mail</h4>
+                                <p>magrinstorecontato@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
 
+        <!-- FOOTER -->
+        <footer class="bg-gray-700 text-white text-center p-4 mt-4">
+            <p>© 2025 Magrin Store</p>
+        </footer>
+
+        <!-- Script para redirecionar para o index.html com a caixa de busca aberta -->
+        <script>
+            document
+                .getElementById("searchIcon")
+                .addEventListener("click", function () {
+                    window.location.href = "index.html?search=open";
+                });
+        </script>
+
+        <!-- Script para o menu -->
+        <script>
+            document
+                .getElementById("menuButton")
+                .addEventListener("click", function () {
+                    const menu = document.getElementById("menu");
+                    menu.classList.toggle("open");
+                });
+
+            document
+                .getElementById("closeMenuButton")
+                .addEventListener("click", function () {
+                    const menu = document.getElementById("menu");
+                    menu.classList.remove("open");
+                });
+
+            document
+                .getElementById("produtosMenu")
+                .addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const submenu = document.getElementById("produtosSubmenu");
+                    submenu.classList.toggle("open");
+                });
+        </script>
+    </body>
 </html>

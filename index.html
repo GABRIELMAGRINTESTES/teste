@@ -135,40 +135,14 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* Ajuste para mostrar 3 produtos no mobile */
     .category-carousel .carousel-track .product-card {
       scroll-snap-align: start;
-      min-width: calc(33.33% - 0.67rem);
-      /* 3 produtos com gap de 1rem */
+      min-width: 200px;
       flex: 0 0 auto;
       border: 1px solid #e2e8f0;
       border-radius: 0.5rem;
       overflow: hidden;
       transition: transform 0.2s;
-    }
-
-    /* Ajuste fino para telas muito pequenas */
-    @media (max-width: 400px) {
-      .category-carousel .carousel-track .product-card {
-        min-width: calc(50% - 0.5rem);
-        /* 2 produtos se a tela for muito estreita */
-      }
-    }
-
-    /* Para tablets */
-    @media (min-width: 640px) {
-      .category-carousel .carousel-track .product-card {
-        min-width: calc(25% - 0.75rem);
-        /* 4 produtos */
-      }
-    }
-
-    /* Para desktops */
-    @media (min-width: 1024px) {
-      .category-carousel .carousel-track .product-card {
-        min-width: calc(20% - 0.8rem);
-        /* 5 produtos */
-      }
     }
 
     .category-carousel .carousel-track .product-card:hover {
@@ -318,6 +292,7 @@
 
   <main class="p-4">
     <!-- Carrossel Principal -->
+
     <section class="carousel-container mb-12">
       <h2 class="text-2xl font-bold mb-4 text-center">Destaques</h2>
       <div class="carousel-track">
@@ -338,6 +313,7 @@
         <i class="fas fa-chevron-right"></i>
       </button>
     </section>
+
 
     <div id="categoryCarousels"></div>
   </main>
