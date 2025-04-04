@@ -1,4 +1,4 @@
-/* Estilos base - Essenciais */
+/* Estilos base */
 body {
   font-family: 'Roboto', sans-serif;
   line-height: 1.6;
@@ -18,15 +18,6 @@ a:focus {
   transition: transform 0.3s ease;
 }
 
-.product-card {
-  transition: all 0.3s ease;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
 /* Carrossel - Funcionalidades Específicas */
 .carousel-track {
   scrollbar-width: none;
@@ -36,6 +27,123 @@ a:focus {
 
 .carousel-track::-webkit-scrollbar {
   display: none;
+}
+
+/* Padronização das imagens dos produtos */
+.product-card-image {
+  position: relative;
+  width: 100%;
+  padding-top: 100%; /* Aspect ratio 1:1 */
+  overflow: hidden;
+  background-color: #f8fafc; /* Fundo neutro */
+}
+
+.product-card-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Garante que toda imagem seja visível */
+  object-position: center;
+  padding: 10px; /* Espaço interno */
+  background-color: white;
+  mix-blend-mode: multiply;
+}
+
+.product-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.product-card-content {
+  padding: 0.75rem;
+}
+
+.product-card h4 {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  line-height: 1.2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.4rem;
+  color: #1f2937;
+}
+
+.product-card .price {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #1e40af;
+  margin-bottom: 0.2rem;
+}
+
+.product-card .installments {
+  font-size: 0.8rem;
+  color: #4b5563;
+}
+
+.ready-to-ship {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: #10b981;
+  color: white;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.75rem;
+  font-weight: bold;
+  z-index: 10;
+}
+
+.view-all {
+  display: block;
+  text-align: center;
+  margin-top: 0.5rem;
+  color: #3b82f6;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.category-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.category-carousel:hover .category-nav-button {
+  opacity: 1;
+}
+
+.category-prev {
+  left: 10px;
+}
+
+.category-next {
+  right: 10px;
 }
 
 /* Animações */
@@ -60,20 +168,58 @@ a:focus {
   }
 }
 
-/* Ajustes específicos para mobile */
-@media (max-width: 640px) {
-  .product-card {
-    min-width: calc(50% - 0.5rem) !important;
-  }
-  
-  .category-nav-button {
-    width: 30px !important;
-    height: 30px !important;
-  }
-}
-
 /* Correções para iOS */
 input, textarea, button {
   -webkit-appearance: none;
   border-radius: 0;
+}
+
+/* AJUSTES ESPECÍFICOS PARA MOBILE */
+@media (max-width: 640px) {
+  .product-card {
+    min-width: calc(50% - 0.5rem) !important;
+    margin-bottom: 0.5rem;
+  }
+  
+  .product-card-image {
+    padding-top: 120%; /* Imagens um pouco mais altas no mobile */
+  }
+  
+  .category-nav-button {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.7);
+    width: 30px;
+    height: 30px;
+  }
+  
+  .product-card h4 {
+    font-size: 0.9rem;
+  }
+  
+  .product-card-image img {
+    padding: 8px;
+  }
+}
+
+/* Media Queries para outras telas */
+@media (min-width: 640px) {
+  .category-carousel .carousel-track .product-card {
+    min-width: calc(33.33% - 0.67rem);
+  }
+}
+
+@media (min-width: 768px) {
+  .category-carousel .carousel-track .product-card {
+    min-width: calc(25% - 0.75rem);
+  }
+  
+  .product-card-image {
+    padding-top: 100%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .category-carousel .carousel-track .product-card {
+    min-width: calc(20% - 0.8rem);
+  }
 }

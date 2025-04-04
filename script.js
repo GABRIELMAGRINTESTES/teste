@@ -19,7 +19,7 @@ async function fetchProducts() {
             id: product.id,
             name: product.nome,
             price: `R$${parseFloat(product.preco).toFixed(2)}`,
-            rawPrice: parseFloat(product.preco), // Armazena o valor numérico para cálculos
+            rawPrice: parseFloat(product.preco),
             size: product.tamanho,
             image: product.imagem_url,
             images: product.imagens_url ? product.imagens_url.split(", ") : [],
@@ -61,7 +61,6 @@ async function createCategoryCarousels() {
                 <div class="carousel-container">
                     <div class="carousel-track" id="${carouselId}">
                         ${products.slice(0, 10).map(product => {
-                            // Cálculo correto: (valor + 8%) dividido por 6 parcelas
                             const valorComAcrescimo = product.rawPrice * 1.08;
                             const valorParcela = (valorComAcrescimo / 6).toFixed(2);
                             
@@ -77,7 +76,7 @@ async function createCategoryCarousels() {
                                 <div class="product-card-content">
                                     <h4>${product.name}</h4>
                                     <p class="price">${product.price}</p>
-                                    <p class="installments">6x de R$${valorParcela} (com acréscimo)</p>
+                                    <p class="installments">6x de R$${valorParcela}</p>
                                 </div>
                             </div>
                             `;
