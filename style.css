@@ -77,3 +77,46 @@ input, textarea, button {
   -webkit-appearance: none;
   border-radius: 0;
 }
+
+/* ADICIONE ISSO AO SEU style.css EXISTENTE */
+
+/* Garante tamanho consistente para todas as imagens de produtos */
+.product-image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1/1; /* Mantém proporção quadrada */
+  overflow: hidden;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.product-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Mantém proporção sem cortar */
+  padding: 10px; /* Espaço ao redor da imagem */
+}
+
+/* Ajustes específicos para mobile */
+@media (max-width: 640px) {
+  .product-card {
+      min-width: calc(50% - 10px) !important;
+  }
+  
+  .product-image-container {
+      aspect-ratio: 1/1.2; /* Proporção ligeiramente retangular */
+  }
+  
+  .product-image-container img {
+      max-height: 180px;
+      width: auto;
+  }
+}
+
+/* Remove estilos conflitantes existentes */
+.product-card-image, 
+.product-card-image img {
+  all: unset;
+}
