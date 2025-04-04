@@ -61,27 +61,24 @@ async function createCategoryCarousels() {
                 <div class="carousel-container">
                     <div class="carousel-track" id="${carouselId}">
                         ${products.slice(0, 10).map(product => {
-                            // Cálculo correto: (valor + 8%) dividido por 6 parcelas
-                            const valorComAcrescimo = product.rawPrice * 1.08;
-                            const valorParcela = (valorComAcrescimo / 6).toFixed(2);
-                            
-                            return `
-                            <div class="product-card" data-id="${product.id}">
-                                <div class="product-card-image">
-                                    ${product.readyToShip ?
-                                        '<span class="ready-to-ship">Pronta Entrega</span>' : ''}
-                                    <img src="${product.images[0] || product.image}" 
-                                         alt="${product.name}" 
-                                         loading="lazy">
+            // Cálculo correto: (valor + 8%) dividido por 6 parcelas
+            const valorComAcrescimo = product.rawPrice * 1.08;
+            const valorParcela = (valorComAcrescimo / 6).toFixed(2);
+
+            return `
+                                <div class="product-card" data-id="${product.id}">
+                                    <div class="product-card-image">
+                                        ${product.readyToShip ? '<span class="ready-to-ship">Pronta Entrega</span>' : ''}
+                                        <img src="${product.images[0] || product.image}" alt="${product.name}" loading="lazy">
+                                    </div>
+                                    <div class="product-card-content">
+                                        <h4>${product.name}</h4>
+                                        <p class="price">${product.price}</p>
+                                        <p class="installments">6x de R$${valorParcela}</p>
+                                    </div>
                                 </div>
-                                <div class="product-card-content">
-                                    <h4>${product.name}</h4>
-                                    <p class="price">${product.price}</p>
-                                    <p class="installments">6x de R$${valorParcela}</p>
-                                </div>
-                            </div>
                             `;
-                        }).join('')}
+        }).join('')}
                     </div>
                 </div>
                 <button class="category-nav-button category-next" aria-label="Próximo">
