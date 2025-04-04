@@ -1,240 +1,255 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.12.0/+esm";
 
-// Configuração do Supabase
 const supabaseUrl = "https://akpmbgyrnoqvgegwnciz.supabase.co";
-const supabaseKey =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrcG1iZ3lybm9xdmdlZ3duY2l6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ2NzE5NDAsImV4cCI6MjA1MDI0Nzk0MH0.mbN5DB16tfc_iQ6-chS2dUI7-0wc23KWQB-TcWib4t8";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrcG1iZ3lybm9xdmdlZ3duY2l6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ2NzE5NDAsImV4cCI6MjA1MDI0Nzk0MH0.mbN5DB16tfc_iQ6-chS2dUI7-0wc23KWQB-TcWib4t8";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Variáveis globais
-let allProducts = []; // Armazenar todos os produtos
-let currentCategory = "camisas";
+let allProducts = [];
 
-// Função para buscar produtos do Supabase
 async function fetchProducts() {
-    const { data, error } = await supabase.from("produtos").select("*");
-    if (error) {
-        console.error("Erro ao buscar produtos:", error);
+    try {
+        const { data, error } = await supabase.from("produtos").select("*");
+
+        if (error) {
+            console.error("Erro ao buscar produtos:", error);
+            return [];
+        }
+
+        allProducts = data.map((product) => ({
+            id: product.id,
+            name: product.nome,
+            price: `R$${parseFloat(product.preco).toFixed(2)}`,
+            size: product.tamanho,
+            image: product.imagem_url,
+            images: product.imagens_url ? product.imagens_url.split(", ") : [],
+            category: product.categoria,
+            readyToShip: product.pronta_entrega || false
+        }));
+
+        return allProducts;
+    } catch (err) {
+        console.error("Erro inesperado:", err);
         return [];
     }
-    allProducts = data.map((product) => ({
-        id: product.id,
-        name: product.nome,
-        price: `R$${parseFloat(product.preco).toFixed(2)}`,
-        size: product.tamanho,
-        image: product.imagem_url,
-        images: product.imagens_url ? product.imagens_url.split(", ") : [],
-        category: product.categoria,
-    }));
 }
 
-// Função para carregar produtos por categoria
-async function loadProductsByCategory(category) {
-    currentCategory = category;
-    const filteredProducts = allProducts
-        .filter((product) => product.category === category)
-        .sort((a, b) => a.name.localeCompare(b.name)); // Ordena por ordem alfabética
+async function createCategoryCarousels() {
+    const container = document.getElementById('categoryCarousels');
+    container.innerHTML = '';
 
-    // Atualiza o título da categoria
-    document.getElementById("categoryTitle").textContent =
-        category.charAt(0).toUpperCase() + category.slice(1);
-    displayProducts(filteredProducts);
-}
-
-// Função para exibir produtos na grade
-function displayProducts(products) {
-    const grid = document.getElementById("productGrid");
-    const message = document.getElementById("searchMessage");
-    grid.innerHTML = "";
-
-    if (products.length === 0) {
-        message.textContent =
-            "Não encontrou o que procurava? Contate-nos no Instagram! @Magrin_Store";
-        return;
-    } else {
-        message.textContent = "";
-    }
-
-    products.forEach((product) => {
-        // Cálculo do valor parcelado com 8% de acréscimo
-        const valorComAcrescimo =
-            parseFloat(product.price.replace("R$", "")) * 1.08; // Adiciona 8%
-        const valorParcela = (valorComAcrescimo / 6).toFixed(2); // Divide em 6x
-
-        const productItem = `
-            <div class="border rounded-lg overflow-hidden">
-                <div class="relative">
-                    <img src="${product.images.length > 0 ? product.images[0] : product.image}" 
-                        alt="Imagem de ${product.name}" 
-                        class="w-full">
-                    <button class="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded-full" data-id="${product.id}">
-                        <i class="fas fa-shopping-bag"></i>
-                    </button>
-                </div>
-                <div class="p-4 text-center">
-                    <h2 class="text-lg font-semibold">${product.name}</h2>
-                    <p class="text-xl font-bold">${product.price}</p>
-                    <p class="text-sm text-gray-500">6 x de <span class="text-blue-600">R$${valorParcela}</span></p>
-                </div>
-            </div>
-        `;
-        grid.innerHTML += productItem;
+    const productsByCategory = {};
+    allProducts.forEach(product => {
+        if (!productsByCategory[product.category]) {
+            productsByCategory[product.category] = [];
+        }
+        productsByCategory[product.category].push(product);
     });
 
-    // Adiciona evento de clique aos botões de compra
-    document.querySelectorAll("button[data-id]").forEach((button) => {
-        button.addEventListener("click", () => {
-            const productId = button.getAttribute("data-id");
+    for (const [category, products] of Object.entries(productsByCategory)) {
+        if (products.length === 0) continue;
+
+        const carouselId = `carousel-${category.replace(/\s+/g, '-')}`;
+        const carouselSection = document.createElement('section');
+        carouselSection.className = 'category-carousel mb-12';
+        carouselSection.innerHTML = `
+            <h3>${category.charAt(0).toUpperCase() + category.slice(1)}</h3>
+            <div class="relative">
+                <button class="category-nav-button category-prev" aria-label="Anterior">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="carousel-container">
+                    <div class="carousel-track" id="${carouselId}">
+                        ${products.slice(0, 10).map(product => `
+                            <div class="product-card">
+                                <div class="relative">
+                                    <img src="${product.images[0] || product.image}" 
+                                         alt="${product.name}" 
+                                         class="w-full h-48 object-cover"
+                                         loading="lazy">
+                                    ${product.readyToShip ?
+                `<span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                                            Pronta Entrega
+                                        </span>` : ''}
+                                    <button class="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded-full hover:bg-gray-800 transition" 
+                                            data-id="${product.id}"
+                                            aria-label="Comprar ${product.name}">
+                                        <i class="fas fa-shopping-bag"></i>
+                                    </button>
+                                </div>
+                                <div class="p-4">
+                                    <h4 class="font-semibold truncate">${product.name}</h4>
+                                    <p class="font-bold text-lg">${product.price}</p>
+                                    <p class="text-sm text-gray-600">6x de R$${(parseFloat(product.price.replace('R$', '')) / 6).toFixed(2)}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <button class="category-nav-button category-next" aria-label="Próximo">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="text-center mt-2">
+                <a href="categorias.html?category=${encodeURIComponent(category)}" class="text-blue-600 hover:underline">
+                    Ver todos os ${category.toLowerCase()}
+                </a>
+            </div>
+        `;
+
+        container.appendChild(carouselSection);
+        initCategoryCarousel(carouselId, carouselSection);
+    }
+
+    document.querySelectorAll('.product-card button[data-id]').forEach(button => {
+        button.addEventListener('click', () => {
+            const productId = button.getAttribute('data-id');
             window.location.href = `produto.html?id=${productId}`;
         });
     });
 }
 
-// Função para buscar itens na barra de pesquisa
-function searchItems(event) {
-    event.preventDefault(); // Evita o recarregamento da página
-    const query = document.getElementById("searchInput").value.toLowerCase();
-    const filteredProducts = allProducts.filter(
-        (product) => product.name.toLowerCase().includes(query), // Busca pelo nome do produto
-    );
+function initCategoryCarousel(carouselId, container) {
+    const track = container.querySelector(`#${carouselId}`);
+    const prevBtn = container.querySelector('.category-prev');
+    const nextBtn = container.querySelector('.category-next');
+    const products = container.querySelectorAll('.product-card');
+    const productWidth = products[0].offsetWidth + 16; // Largura do produto + gap
 
-    // Atualiza o título para "Produtos" ao realizar a busca
-    document.getElementById("categoryTitle").textContent = "Produtos";
-    displayProducts(filteredProducts);
-}
+    let currentPosition = 0;
+    let isDragging = false;
+    let startX;
+    let scrollLeft;
 
-// Função para carregar os detalhes do produto
-async function loadProductDetails() {
-    // Obtém o ID do produto da URL
-    const params = new URLSearchParams(window.location.search);
-    const productId = params.get("id");
-
-    if (!productId) {
-        console.error("ID do produto não encontrado na URL.");
-        return;
+    // Calcula quantos produtos são visíveis
+    function getVisibleProductsCount() {
+        return window.innerWidth < 640 ? 3 : 1;
     }
 
-    console.log("ID do produto:", productId); // Debug
-
-    // Busca os detalhes do produto no Supabase
-    const { data: product, error } = await supabase
-        .from("produtos")
-        .select("*")
-        .eq("id", productId)
-        .single();
-
-    if (error) {
-        console.error("Erro ao buscar produto:", error);
-        return;
-    }
-
-    console.log("Produto encontrado:", product); // Debug
-
-    // Exibe as informações do produto
-    document.getElementById("productName").textContent = product.nome;
-    document.getElementById("productPrice").textContent =
-        `R$${parseFloat(product.preco).toFixed(2)}`;
-    document.getElementById("productSize").textContent =
-        `Tamanho: ${product.tamanho}`;
-
-    // Calcula o valor parcelado com 8% de acréscimo
-    const valorComAcrescimo = parseFloat(product.preco) * 1.08; // Adiciona 8%
-    const valorParcela = (valorComAcrescimo / 6).toFixed(2); // Divide em 6x
-
-    // Exibe o valor das parcelas
-    document.getElementById("productInstallments").textContent =
-        `6x de R$${valorParcela}`; // Remove "sem juros"
-
-    // Exibe as imagens do produto no carrossel
-    const carouselTrack = document.getElementById("productCarousel");
-    const images = product.imagens_url
-        ? product.imagens_url.split(",").map((url) => url.trim()) // Divide as URLs e remove espaços
-        : [product.imagem_url]; // Fallback para uma única imagem
-
-    // Limpa o carrossel antes de adicionar novas imagens
-    carouselTrack.innerHTML = "";
-
-    // Adiciona as imagens ao carrossel
-    images.forEach((image) => {
-        const slide = document.createElement("div");
-        slide.className = "w-full";
-        slide.innerHTML = `<img src="${image}" alt="${product.nome}" class="w-full" />`;
-        carouselTrack.appendChild(slide);
+    // Avança a quantidade certa de produtos baseado no tamanho da tela
+    nextBtn.addEventListener('click', () => {
+        const productsToScroll = getVisibleProductsCount();
+        currentPosition = Math.min(
+            currentPosition + productsToScroll * productWidth,
+            track.scrollWidth - track.offsetWidth
+        );
+        track.scrollTo({ left: currentPosition, behavior: 'smooth' });
     });
 
-    // Reinicializa o carrossel após adicionar as imagens
-    initializeCarousel();
+    // Retrocede a quantidade certa de produtos baseado no tamanho da tela
+    prevBtn.addEventListener('click', () => {
+        const productsToScroll = getVisibleProductsCount();
+        currentPosition = Math.max(
+            currentPosition - productsToScroll * productWidth,
+            0
+        );
+        track.scrollTo({ left: currentPosition, behavior: 'smooth' });
+    });
+
+    // Suporte para arrastar com o mouse/touch
+    track.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        startX = e.pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+        track.style.cursor = 'grabbing';
+        track.style.scrollBehavior = 'auto';
+    });
+
+    track.addEventListener('mouseleave', () => {
+        isDragging = false;
+        track.style.cursor = 'grab';
+    });
+
+    track.addEventListener('mouseup', () => {
+        isDragging = false;
+        track.style.cursor = 'grab';
+        track.style.scrollBehavior = 'smooth';
+        currentPosition = track.scrollLeft;
+    });
+
+    track.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.pageX - track.offsetLeft;
+        const walk = (x - startX) * 2;
+        track.scrollLeft = scrollLeft - walk;
+    });
+
+    // Suporte para touch
+    track.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        startX = e.touches[0].pageX - track.offsetLeft;
+        scrollLeft = track.scrollLeft;
+        track.style.scrollBehavior = 'auto';
+    });
+
+    track.addEventListener('touchend', () => {
+        isDragging = false;
+        track.style.scrollBehavior = 'smooth';
+        currentPosition = track.scrollLeft;
+    });
+
+    track.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+        const x = e.touches[0].pageX - track.offsetLeft;
+        const walk = (x - startX) * 2;
+        track.scrollLeft = scrollLeft - walk;
+    });
+
+    // Atualiza a posição atual quando o usuário scrolla manualmente
+    track.addEventListener('scroll', () => {
+        currentPosition = track.scrollLeft;
+    });
 }
 
-// Função para inicializar o carrossel
-function initializeCarousel() {
+function initMainCarousel() {
+    let currentIndex = 0;
     const carouselTrack = document.querySelector(".carousel-track");
     const slides = document.querySelectorAll(".carousel-track > div");
     const totalSlides = slides.length;
-    let currentIndex = 0;
 
-    // Função para atualizar a posição do carrossel
     function updateCarousel() {
-        const offset = -currentIndex * 100; // Calcula o deslocamento
+        const offset = -currentIndex * 100;
         carouselTrack.style.transform = `translateX(${offset}%)`;
     }
 
-    // Função para avançar para o próximo slide
     function nextSlide() {
         if (currentIndex < totalSlides - 1) {
             currentIndex++;
         } else {
-            currentIndex = 0; // Volta para o primeiro slide
+            currentIndex = 0;
         }
         updateCarousel();
     }
 
-    // Evento para o botão "Anterior"
     document.querySelector(".carousel-prev").addEventListener("click", () => {
         if (currentIndex > 0) {
             currentIndex--;
         } else {
-            currentIndex = totalSlides - 1; // Volta para o último slide
+            currentIndex = totalSlides - 1;
         }
         updateCarousel();
     });
 
-    // Evento para o botão "Próximo"
     document.querySelector(".carousel-next").addEventListener("click", () => {
         nextSlide();
     });
 
-    // Inicializa o carrossel
     updateCarousel();
-
-    // Autoplay: Passa para o próximo slide a cada 12 segundos
-    setInterval(nextSlide, 12000); // 12000ms = 12s
+    setInterval(nextSlide, 8000);
 }
 
-// Carregar produtos da categoria "camisas" ao iniciar a página
 document.addEventListener("DOMContentLoaded", async () => {
-    await fetchProducts(); // Carrega os produtos
+    initMainCarousel();
+    await fetchProducts();
+    createCategoryCarousels();
 
-    // Verifica se há uma categoria na URL
-    const params = new URLSearchParams(window.location.search);
-    const category = params.get("category");
-
-    if (category) {
-        loadProductsByCategory(category); // Carrega a categoria da URL
-    } else {
-        loadProductsByCategory("camisas"); // Carrega a categoria padrão
-    }
-
-    // Vincula a função de busca ao formulário de busca
-    const searchForm = document.getElementById("searchForm");
-    searchForm.addEventListener("submit", searchItems);
+    // Busca global
+    document.getElementById("searchForm")?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const query = document.getElementById("searchInput").value.trim();
+        if (query) {
+            window.location.href = `categorias.html?search=${encodeURIComponent(query)}`;
+        }
+    });
 });
-
-// Carrega os detalhes do produto ao carregar a página produto.html
-if (window.location.pathname.includes("produto.html")) {
-    document.addEventListener("DOMContentLoaded", loadProductDetails);
-}
-
-// Expor funções para o escopo global
-window.loadProductsByCategory = loadProductsByCategory;
-window.searchItems = searchItems;

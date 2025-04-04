@@ -1,377 +1,386 @@
 <!doctype html>
 <html lang="pt">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta
-            name="description"
-            content="Catálogo de camisas da Magrin Store: nacionais, internacionais, retrô e muito mais!"
-        />
-        <title>Magrin Store Catálogo</title>
-        <link rel="stylesheet" href="style.css" />
-        <script src="https://cdn.tailwindcss.com"></script>
-        <link
-            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-            rel="stylesheet"
-        />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap"
-            rel="stylesheet"
-        />
-        <style>
-            /* Estilos personalizados para o menu */
-            .menu {
-                display: none;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 250px; /* Largura do menu */
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.9);
-                z-index: 1000;
-                padding: 20px;
-                color: white;
-                box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-            }
-            .menu.open {
-                display: block;
-            }
-            .menu ul {
-                list-style: none;
-                padding: 0;
-            }
-            .menu ul li {
-                margin: 15px 0;
-            }
-            .menu ul li a {
-                color: white;
-                text-decoration: none;
-                font-size: 18px;
-            }
-            .menu ul li a:hover {
-                color: #ccc;
-            }
-            .submenu {
-                display: none;
-                margin-left: 20px;
-            }
-            .submenu.open {
-                display: block;
-            }
-            .close-button {
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                background: none;
-                border: none;
-                color: white;
-                font-size: 24px;
-                cursor: pointer;
-            }
-            /* Estilo para o balão "Pronta Entrega" */
-            .pronta-entrega-balao {
-                background-color: #007bff; /* Azul */
-                color: white;
-                padding: 5px 10px;
-                border-radius: 15px;
-                font-size: 14px;
-                font-weight: bold;
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                z-index: 1;
-            }
-        </style>
-    </head>
-    <body class="bg-white text-black">
-        <!-- HEADER -->
-        <header class="flex items-center justify-between p-4 border-b">
-            <!-- Ícone do menu -->
-            <button id="menuButton" class="text-2xl">
-                <i class="fas fa-bars"></i>
-            </button>
 
-            <!-- Nome da loja -->
-            <h1 class="text-2xl font-bold">
-                <a href="index.html" class="text-black hover:text-gray-600">
-                    MAGRIN STORE
-                </a>
-            </h1>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="description"
+    content="Catálogo de camisas da Magrin Store: nacionais, internacionais, retrô e muito mais!" />
+  <title>Magrin Store Catálogo</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    .menu {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 250px;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      padding: 20px;
+      color: white;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+    }
 
-            <!-- Ícone da lupa (ao clicar, exibe a caixa de busca) -->
-            <button id="searchIcon" class="text-2xl">
-                <i class="fas fa-search"></i>
-            </button>
-        </header>
+    .menu.open {
+      display: block;
+    }
 
-        <!-- MENU DE NAVEGAÇÃO -->
-        <div id="menu" class="menu">
-            <button class="close-button" id="closeMenuButton">
-                <i class="fas fa-times"></i>
-            </button>
-            <ul>
-                <li><a href="index.html">Início</a></li>
-                <li>
-                    <a href="#" id="produtosMenu"
-                        >Produtos <i class="fas fa-chevron-down"></i
-                    ></a>
-                    <ul id="produtosSubmenu" class="submenu">
-                        <li>
-                            <a href="index.html?category=camisas">Camisas</a>
-                        </li>
-                        <li><a href="index.html?category=tenis">Tênis</a></li>
-                        <li>
-                            <a href="index.html?category=jaquetas">Jaquetas</a>
-                        </li>
-                        <li>
-                            <a href="index.html?category=outros"
-                                >Outros Itens</a
-                            >
-                        </li>
-                        <li>
-                            <a href="index.html?category=pronta entrega"
-                                >Pronta Entrega</a
-                            >
-                        </li>
-                    </ul>
-                </li>
-                <li><a href="quemsomos.html">Quem Somos</a></li>
-                <li><a href="contatos.html">Contatos</a></li>
-            </ul>
+    .menu ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .menu ul li {
+      margin: 15px 0;
+    }
+
+    .menu ul li a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    .menu ul li a:hover {
+      color: #ccc;
+    }
+
+    .submenu {
+      display: none;
+      margin-left: 20px;
+    }
+
+    .submenu.open {
+      display: block;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .carousel-track>div {
+      min-width: 100%;
+      box-sizing: border-box;
+    }
+
+    .carousel-prev,
+    .carousel-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 10;
+      border-radius: 50%;
+    }
+
+    .carousel-prev {
+      left: 10px;
+    }
+
+    .carousel-next {
+      right: 10px;
+    }
+
+    .category-carousel {
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .category-carousel h3 {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+      color: #2d3748;
+      padding: 0 1rem;
+    }
+
+    .category-carousel .carousel-container {
+      padding: 0 1rem;
+    }
+
+    .category-carousel .carousel-track {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      gap: 1rem;
+      padding-bottom: 1rem;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Ajuste para mostrar 3 produtos no mobile */
+    .category-carousel .carousel-track .product-card {
+      scroll-snap-align: start;
+      min-width: calc(33.33% - 0.67rem);
+      /* 3 produtos com gap de 1rem */
+      flex: 0 0 auto;
+      border: 1px solid #e2e8f0;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+
+    /* Ajuste fino para telas muito pequenas */
+    @media (max-width: 400px) {
+      .category-carousel .carousel-track .product-card {
+        min-width: calc(50% - 0.5rem);
+        /* 2 produtos se a tela for muito estreita */
+      }
+    }
+
+    /* Para tablets */
+    @media (min-width: 640px) {
+      .category-carousel .carousel-track .product-card {
+        min-width: calc(25% - 0.75rem);
+        /* 4 produtos */
+      }
+    }
+
+    /* Para desktops */
+    @media (min-width: 1024px) {
+      .category-carousel .carousel-track .product-card {
+        min-width: calc(20% - 0.8rem);
+        /* 5 produtos */
+      }
+    }
+
+    .category-carousel .carousel-track .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-nav-button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .category-carousel:hover .category-nav-button {
+      opacity: 1;
+    }
+
+    .category-prev {
+      left: 10px;
+    }
+
+    .category-next {
+      right: 10px;
+    }
+
+    /* Banner Styles */
+    .banner-container {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      background-color: #f5f5f5;
+    }
+
+    .banner-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    @media (max-width: 880px) {
+      .banner-image {
+        width: 100%;
+        height: auto;
+        max-height: 400px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .banner-image {
+        max-height: 300px;
+      }
+
+      .category-nav-button {
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.7);
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-white text-black">
+  <header class="flex items-center justify-between p-4 border-b">
+    <button id="menuButton" class="text-2xl" aria-label="Abrir menu">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <h1 class="text-2xl font-bold">
+      <a href="index.html" class="text-black hover:text-gray-600">
+        MAGRIN STORE
+      </a>
+    </h1>
+
+    <button id="searchIcon" class="text-2xl" aria-label="Abrir busca">
+      <i class="fas fa-search"></i>
+    </button>
+  </header>
+
+  <div id="menu" class="menu" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Menu de navegação">
+    <button class="close-button" id="closeMenuButton" aria-label="Fechar menu">
+      <i class="fas fa-times"></i>
+    </button>
+    <ul>
+      <li><a href="index.html">Início</a></li>
+      <li>
+        <a href="#" id="produtosMenu">
+          Produtos <i class="fas fa-chevron-down"></i>
+        </a>
+        <ul id="produtosSubmenu" class="submenu">
+          <li><a href="categorias.html?category=camisas">Camisas</a></li>
+          <li><a href="categorias.html?category=tenis">Tênis</a></li>
+          <li><a href="categorias.html?category=jaquetas">Jaquetas</a></li>
+          <li><a href="categorias.html?category=outros">Outros Itens</a></li>
+          <li><a href="categorias.html?category=pronta entrega">Pronta Entrega</a></li>
+        </ul>
+      </li>
+      <li><a href="quemsomos.html">Quem Somos</a></li>
+      <li><a href="contatos.html">Contatos</a></li>
+    </ul>
+  </div>
+
+  <nav class="bg-blue-700 p-4">
+    <ul class="flex justify-center space-x-4">
+      <li>
+        <a class="text-white font-bold hover:underline" href="categorias.html?category=camisas">Camisas</a>
+      </li>
+      <li>
+        <a class="text-white font-bold hover:underline" href="categorias.html?category=tenis">Tênis</a>
+      </li>
+      <li>
+        <a class="text-white font-bold hover:underline" href="categorias.html?category=jaquetas">Jaquetas</a>
+      </li>
+      <li>
+        <a class="text-white font-bold hover:underline" href="categorias.html?category=outros">Outros Itens</a>
+      </li>
+      <li>
+        <a class="text-white font-bold hover:underline" href="categorias.html?category=pronta entrega">Pronta
+          Entrega</a>
+      </li>
+    </ul>
+  </nav>
+
+  <div id="searchBox" class="hidden p-4 border-b">
+    <form id="searchForm" class="relative w-full max-w-md mx-auto">
+      <input class="border rounded-full pl-4 pr-10 py-2 w-full" id="searchInput" placeholder="Buscar produtos..."
+        type="text" aria-label="Buscar produtos" />
+      <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
+        aria-label="Buscar">
+        <i class="fas fa-search"></i>
+      </button>
+    </form>
+  </div>
+
+  <main class="p-4">
+    <!-- Carrossel Principal -->
+    <section class="carousel-container mb-12">
+      <h2 class="text-2xl font-bold mb-4 text-center">Destaques</h2>
+      <div class="carousel-track">
+        <div class="w-full banner-container">
+          <img src="images/banner1.png" alt="Promoções em destaque" class="banner-image" />
         </div>
-
-        <!-- CABEÇALHO DE CATEGORIAS -->
-        <nav class="bg-blue-700 p-4">
-            <ul class="flex justify-center space-x-4">
-                <li>
-                    <a
-                        class="text-white font-bold"
-                        href="#"
-                        onclick="loadProductsByCategory('camisas')"
-                        >Camisas</a
-                    >
-                </li>
-                <li>
-                    <a
-                        class="text-white font-bold"
-                        href="#"
-                        onclick="loadProductsByCategory('tenis')"
-                        >Tênis</a
-                    >
-                </li>
-                <li>
-                    <a
-                        class="text-white font-bold"
-                        href="#"
-                        onclick="loadProductsByCategory('jaquetas')"
-                        >Jaquetas</a
-                    >
-                </li>
-                <li>
-                    <a
-                        class="text-white font-bold"
-                        href="#"
-                        onclick="loadProductsByCategory('outros')"
-                        >Outros Itens</a
-                    >
-                </li>
-                <li>
-                    <a
-                        class="text-white font-bold"
-                        href="#"
-                        onclick="loadProductsByCategory('pronta entrega')"
-                        >Pronta Entrega</a
-                    >
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Caixa de busca (inicialmente oculta) -->
-        <div id="searchBox" class="hidden p-4 border-b">
-            <form id="searchForm" class="relative w-full max-w-md mx-auto">
-                <input
-                    class="border rounded-full pl-4 pr-10 py-2 w-full"
-                    id="searchInput"
-                    placeholder="Buscar"
-                    type="text"
-                />
-                <button
-                    type="submit"
-                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500"
-                >
-                    <i class="fas fa-search"></i>
-                </button>
-            </form>
+        <div class="w-full banner-container">
+          <img src="images/banner1.png" alt="Novidades da semana" class="banner-image" />
         </div>
+        <div class="w-full banner-container">
+          <img src="images/banner1.png" alt="Lançamentos exclusivos" class="banner-image" />
+        </div>
+      </div>
+      <button class="carousel-prev" aria-label="Slide anterior">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button class="carousel-next" aria-label="Próximo slide">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </section>
 
-        <!-- CONTEÚDO PRINCIPAL (CARROSSEL DE PRODUTOS EM DESTAQUE) -->
-        <main class="p-4">
-            <section class="carousel-container">
-                <div class="carousel-track">
-                    <!-- Imagens do carrossel (adicione manualmente) -->
-                    <div class="w-full">
-                        <img src="images/banner1.png" alt="Produto 1" />
-                    </div>
-                    <div class="w-full">
-                        <img src="images/banner1.png" alt="Produto 2" />
-                    </div>
-                    <div class="w-full">
-                        <img src="images/banner1.png" alt="Produto 3" />
-                    </div>
-                </div>
-                <!-- Botões de navegação -->
-                <button class="carousel-prev">
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="carousel-next">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </section>
-        </main>
+    <div id="categoryCarousels"></div>
+  </main>
 
-        <!-- CONTEÚDO PRINCIPAL -->
-        <main class="p-4">
-            <section class="deals">
-                <h2
-                    class="text-center text-2xl font-bold mb-4"
-                    id="categoryTitle"
-                >
-                    Produtos
-                </h2>
-                <p
-                    class="message text-center text-red-500"
-                    id="searchMessage"
-                ></p>
+  <footer class="bg-gray-700 text-white text-center p-4 mt-8">
+    <p>© 2025 Magrin Store - Todos os direitos reservados</p>
+  </footer>
 
-                <!-- GRADE DE PRODUTOS: Agora com 2 colunas no mobile -->
-                <div
-                    class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
-                    id="productGrid"
-                >
-                    <!-- Os produtos serão carregados aqui -->
-                </div>
-            </section>
-        </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.12.0/+esm" type="module"></script>
+  <script src="script.js" type="module"></script>
 
-        <!-- FOOTER -->
-        <footer class="bg-gray-700 text-white text-center p-4 mt-4">
-            <p>© 2025 Magrin Store</p>
-        </footer>
+  <script>
+    document.getElementById("menuButton").addEventListener("click", function () {
+      const menu = document.getElementById("menu");
+      menu.classList.toggle("open");
+      menu.setAttribute('aria-hidden', !menu.classList.contains('open'));
+    });
 
-        <script>
-            // Variáveis globais
-            let currentIndex = 0; // Índice atual do carrossel
-            const carouselTrack = document.querySelector(".carousel-track");
-            const slides = document.querySelectorAll(".carousel-track > div");
-            const totalSlides = slides.length;
+    document.getElementById("closeMenuButton").addEventListener("click", function () {
+      const menu = document.getElementById("menu");
+      menu.classList.remove("open");
+      menu.setAttribute('aria-hidden', 'true');
+    });
 
-            // Função para atualizar a posição do carrossel
-            function updateCarousel() {
-                const offset = -currentIndex * 100; // Calcula o deslocamento
-                carouselTrack.style.transform = `translateX(${offset}%)`;
-            }
+    document.getElementById("produtosMenu").addEventListener("click", function (e) {
+      e.preventDefault();
+      const submenu = document.getElementById("produtosSubmenu");
+      submenu.classList.toggle("open");
+    });
 
-            // Função para avançar para o próximo slide
-            function nextSlide() {
-                if (currentIndex < totalSlides - 1) {
-                    currentIndex++;
-                } else {
-                    currentIndex = 0; // Volta para o primeiro slide
-                }
-                updateCarousel();
-            }
+    document.getElementById("searchIcon").addEventListener("click", function () {
+      const searchBox = document.getElementById("searchBox");
+      searchBox.classList.toggle("hidden");
+      if (!searchBox.classList.contains("hidden")) {
+        document.getElementById("searchInput").focus();
+      }
+    });
 
-            // Evento para o botão "Anterior"
-            document
-                .querySelector(".carousel-prev")
-                .addEventListener("click", () => {
-                    if (currentIndex > 0) {
-                        currentIndex--;
-                    } else {
-                        currentIndex = totalSlides - 1; // Volta para o último slide
-                    }
-                    updateCarousel();
-                });
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("search") === "open") {
+      document.getElementById("searchBox").classList.remove("hidden");
+    }
+  </script>
+</body>
 
-            // Evento para o botão "Próximo"
-            document
-                .querySelector(".carousel-next")
-                .addEventListener("click", () => {
-                    nextSlide();
-                });
-
-            // Inicializa o carrossel
-            updateCarousel();
-
-            // Autoplay: Passa para o próximo slide a cada 12 segundos
-            setInterval(nextSlide, 12000); // 12000ms = 12s
-        </script>
-
-        <!-- Importação do Supabase via CDN -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.12.0/+esm"
-            type="module"
-        ></script>
-        <script src="script.js" type="module"></script>
-
-        <!-- Script para exibir/ocultar a caixa de busca -->
-        <script>
-            document
-                .getElementById("searchIcon")
-                .addEventListener("click", function () {
-                    const searchBox = document.getElementById("searchBox");
-                    searchBox.classList.toggle("hidden");
-                });
-        </script>
-        <!-- Script para abrir a caixa de busca automaticamente -->
-        <script>
-            // Verifica se o parâmetro search=open está na URL
-            const params = new URLSearchParams(window.location.search);
-            if (params.get("search") === "open") {
-                // Abre a caixa de busca
-                document.getElementById("searchBox").classList.remove("hidden");
-            }
-        </script>
-
-        <!-- Script para o menu -->
-        <script>
-            document
-                .getElementById("menuButton")
-                .addEventListener("click", function () {
-                    const menu = document.getElementById("menu");
-                    menu.classList.toggle("open");
-                });
-
-            document
-                .getElementById("closeMenuButton")
-                .addEventListener("click", function () {
-                    const menu = document.getElementById("menu");
-                    menu.classList.remove("open");
-                });
-
-            document
-                .getElementById("produtosMenu")
-                .addEventListener("click", function (e) {
-                    e.preventDefault();
-                    const submenu = document.getElementById("produtosSubmenu");
-                    submenu.classList.toggle("open");
-                });
-        </script>
-
-        <!-- Script para o formulário de busca -->
-        <script>
-            document
-                .getElementById("searchForm")
-                .addEventListener("submit", function (e) {
-                    e.preventDefault(); // Evita o recarregamento da página
-                    const query = document
-                        .getElementById("searchInput")
-                        .value.toLowerCase();
-                    const filteredProducts = allProducts.filter(
-                        (product) => product.name.toLowerCase().includes(query), // Busca pelo nome do produto
-                    );
-                    displayProducts(filteredProducts);
-                });
-        </script>
-    </body>
 </html>

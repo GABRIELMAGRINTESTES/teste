@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Produtos da categoria - Magrin Store" />
+    <title>Produtos da Categoria - Magrin Store</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet" />
+    <style>
+        .menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            padding: 20px;
+            color: white;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .menu.open {
+            display: block;
+        }
+
+        .menu ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .menu ul li {
+            margin: 15px 0;
+        }
+
+        .menu ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .menu ul li a:hover {
+            color: #ccc;
+        }
+
+        .submenu {
+            display: none;
+            margin-left: 20px;
+        }
+
+        .submenu.open {
+            display: block;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .pronta-entrega-balao {
+            background-color: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1;
+        }
+
+        #searchBox {
+            display: none;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            background-color: #f8fafc;
+        }
+
+        #searchForm {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            padding-right: 3rem;
+            border-radius: 9999px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s ease;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+        }
+
+        #searchForm button {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #718096;
+            cursor: pointer;
+        }
+
+        #searchForm button:hover {
+            color: #4299e1;
+        }
+
+        .pagination button {
+            transition: all 0.2s ease;
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+
+<body class="bg-white text-black">
+    <header class="flex items-center justify-between p-4 border-b">
+        <button id="menuButton" class="text-2xl" aria-label="Abrir menu">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <h1 class="text-2xl font-bold">
+            <a href="index.html" class="text-black hover:text-gray-600">
+                MAGRIN STORE
+            </a>
+        </h1>
+
+        <button id="searchIcon" class="text-2xl" aria-label="Abrir busca"
+            onclick="window.location.href='index.html?search=open'">
+            <i class="fas fa-search"></i>
+        </button>
+    </header>
+
+    <div id="searchBox" class="hidden">
+        <form id="searchForm">
+            <input type="text" id="searchInput" placeholder="Buscar produtos..." aria-label="Buscar produtos">
+            <button type="submit" aria-label="Buscar">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+    </div>
+
+    <div id="menu" class="menu" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Menu de navegação">
+        <button class="close-button" id="closeMenuButton" aria-label="Fechar menu">
+            <i class="fas fa-times"></i>
+        </button>
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li>
+                <a href="#" id="produtosMenu">Produtos <i class="fas fa-chevron-down"></i></a>
+                <ul id="produtosSubmenu" class="submenu">
+                    <li>
+                        <a href="categorias.html?category=camisas">Camisas</a>
+                    </li>
+                    <li><a href="categorias.html?category=tenis">Tênis</a></li>
+                    <li>
+                        <a href="categorias.html?category=jaquetas">Jaquetas</a>
+                    </li>
+                    <li>
+                        <a href="categorias.html?category=outros">Outros Itens</a>
+                    </li>
+                    <li>
+                        <a href="categorias.html?category=pronta entrega">Pronta Entrega</a>
+                    </li>
+                </ul>
+            </li>
+            <li><a href="quemsomos.html">Quem Somos</a></li>
+            <li><a href="contatos.html">Contatos</a></li>
+        </ul>
+    </div>
+
+    <main class="p-4">
+        <section class="deals">
+            <h2 class="text-center text-2xl font-bold mb-4" id="categoryTitle">
+                Produtos
+            </h2>
+            <p class="message text-center text-red-500" id="searchMessage"></p>
+
+            <div id="searchInfo" class="text-center mb-4 hidden">
+                <p class="text-gray-600">Resultados para: <span id="searchTerm" class="font-semibold"></span></p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" id="productGrid">
+                <!-- Os produtos serão carregados aqui -->
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-700 text-white text-center p-4 mt-4">
+        <p>© 2025 Magrin Store</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.12.0/+esm" type="module"></script>
+    <script src="script-categorias.js" type="module"></script>
+</body>
+
+</html>
