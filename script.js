@@ -19,7 +19,6 @@ async function fetchProducts() {
             id: product.id,
             name: product.nome,
             price: `R$${parseFloat(product.preco).toFixed(2)}`,
-            rawPrice: parseFloat(product.preco), // Armazena o valor numérico para cálculos
             size: product.tamanho,
             image: product.imagem_url,
             images: product.imagens_url ? product.imagens_url.split(", ") : [],
@@ -53,57 +52,58 @@ async function createCategoryCarousels() {
         const carouselSection = document.createElement('section');
         carouselSection.className = 'category-carousel mb-12';
         carouselSection.innerHTML = `
-            <h3 class="text-xl font-bold mb-4">${category.charAt(0).toUpperCase() + category.slice(1)}</h3>
+            <h3>${category.charAt(0).toUpperCase() + category.slice(1)}</h3>
             <div class="relative">
                 <button class="category-nav-button category-prev" aria-label="Anterior">
                     <i class="fas fa-chevron-left"></i>
                 </button>
                 <div class="carousel-container">
                     <div class="carousel-track" id="${carouselId}">
-                        ${products.slice(0, 10).map(product => {
-                            // Cálculo correto: (valor + 8%) dividido por 6 parcelas
-                            const valorComAcrescimo = product.rawPrice * 1.08;
-                            const valorParcela = (valorComAcrescimo / 6).toFixed(2);
-                            
-                            return `
-                            <div class="product-card" data-id="${product.id}">
-                                <div class="product-card-image">
-                                    ${product.readyToShip ?
-                                        '<span class="ready-to-ship">Pronta Entrega</span>' : ''}
+                        ${products.slice(0, 10).map(product => `
+                            <div class="product-card">
+                                <div class="relative">
                                     <img src="${product.images[0] || product.image}" 
                                          alt="${product.name}" 
+                                         class="w-full h-48 object-cover"
                                          loading="lazy">
+                                    ${product.readyToShip ?
+                `<span class="absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+                                            Pronta Entrega
+                                        </span>` : ''}
+                                    <button class="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded-full hover:bg-gray-800 transition" 
+                                            data-id="${product.id}"
+                                            aria-label="Comprar ${product.name}">
+                                        <i class="fas fa-shopping-bag"></i>
+                                    </button>
                                 </div>
-                                <div class="product-card-content">
-                                    <h4>${product.name}</h4>
-                                    <p class="price">${product.price}</p>
-                                    <p class="installments">6x de R$${valorParcela}</p>
+                                <div class="p-4">
+                                    <h4 class="font-semibold truncate">${product.name}</h4>
+                                    <p class="font-bold text-lg">${product.price}</p>
                                 </div>
                             </div>
-                            `;
-                        }).join('')}
+                        `).join('')}
                     </div>
                 </div>
                 <button class="category-nav-button category-next" aria-label="Próximo">
                     <i class="fas fa-chevron-right"></i>
                 </button>
             </div>
-            <a href="categorias.html?category=${encodeURIComponent(category)}" class="view-all">
-                Ver Mais
-            </a>
+            <div class="text-center mt-2">
+                <a href="categorias.html?category=${encodeURIComponent(category)}" class="text-blue-600 hover:underline">
+                    Ver Mais
+                </a>
+            </div>
         `;
 
         container.appendChild(carouselSection);
         initCategoryCarousel(carouselId, carouselSection);
     }
 
-    // Adiciona evento de clique para todos os cards de produto
-    document.addEventListener('click', function(e) {
-        const productCard = e.target.closest('.product-card');
-        if (productCard) {
-            const productId = productCard.getAttribute('data-id');
+    document.querySelectorAll('.product-card button[data-id]').forEach(button => {
+        button.addEventListener('click', () => {
+            const productId = button.getAttribute('data-id');
             window.location.href = `produto.html?id=${productId}`;
-        }
+        });
     });
 }
 
@@ -112,20 +112,19 @@ function initCategoryCarousel(carouselId, container) {
     const prevBtn = container.querySelector('.category-prev');
     const nextBtn = container.querySelector('.category-next');
     const products = container.querySelectorAll('.product-card');
-    const productWidth = products[0].offsetWidth + 16;
+    const productWidth = products[0].offsetWidth + 16; // Largura do produto + gap
 
     let currentPosition = 0;
     let isDragging = false;
     let startX;
     let scrollLeft;
 
+    // Calcula quantos produtos são visíveis
     function getVisibleProductsCount() {
-        if (window.innerWidth < 640) return 2;
-        if (window.innerWidth < 768) return 3;
-        if (window.innerWidth < 1024) return 4;
-        return 5;
+        return window.innerWidth < 640 ? 3 : 1;
     }
 
+    // Avança a quantidade certa de produtos baseado no tamanho da tela
     nextBtn.addEventListener('click', () => {
         const productsToScroll = getVisibleProductsCount();
         currentPosition = Math.min(
@@ -135,6 +134,7 @@ function initCategoryCarousel(carouselId, container) {
         track.scrollTo({ left: currentPosition, behavior: 'smooth' });
     });
 
+    // Retrocede a quantidade certa de produtos baseado no tamanho da tela
     prevBtn.addEventListener('click', () => {
         const productsToScroll = getVisibleProductsCount();
         currentPosition = Math.max(
@@ -144,6 +144,7 @@ function initCategoryCarousel(carouselId, container) {
         track.scrollTo({ left: currentPosition, behavior: 'smooth' });
     });
 
+    // Suporte para arrastar com o mouse/touch
     track.addEventListener('mousedown', (e) => {
         isDragging = true;
         startX = e.pageX - track.offsetLeft;
@@ -172,6 +173,7 @@ function initCategoryCarousel(carouselId, container) {
         track.scrollLeft = scrollLeft - walk;
     });
 
+    // Suporte para touch
     track.addEventListener('touchstart', (e) => {
         isDragging = true;
         startX = e.touches[0].pageX - track.offsetLeft;
@@ -193,6 +195,7 @@ function initCategoryCarousel(carouselId, container) {
         track.scrollLeft = scrollLeft - walk;
     });
 
+    // Atualiza a posição atual quando o usuário scrolla manualmente
     track.addEventListener('scroll', () => {
         currentPosition = track.scrollLeft;
     });
@@ -240,6 +243,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     await fetchProducts();
     createCategoryCarousels();
 
+    // Busca global
     document.getElementById("searchForm")?.addEventListener("submit", (e) => {
         e.preventDefault();
         const query = document.getElementById("searchInput").value.trim();

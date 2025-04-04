@@ -1,25 +1,38 @@
-/* Estilos base - Essenciais */
+/* Estilos base */
 body {
   font-family: 'Roboto', sans-serif;
   line-height: 1.6;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Acessibilidade */
+/* Melhorias para acessibilidade */
 button:focus,
-input:focus,
-a:focus {
+input:focus {
   outline: 2px solid #3b82f6;
   outline-offset: 2px;
 }
 
-/* Componentes Específicos */
-.menu {
-  transition: transform 0.3s ease;
+/* Efeitos de hover para links */
+a:hover {
+  opacity: 0.8;
 }
 
+/* Estilo para o botão de fechar do menu */
+.close-button:hover {
+  color: #ccc;
+}
+
+/* Estilo para os botões de navegação do carrossel */
+.carousel-prev:hover,
+.carousel-next:hover,
+.category-nav-button:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+/* Estilo para os cards de produto */
 .product-card {
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .product-card:hover {
@@ -27,96 +40,223 @@ a:focus {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-/* Carrossel - Funcionalidades Específicas */
+/* Estilo para a mensagem de busca */
+.message {
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Melhorias para o scroll no mobile */
 .carousel-track {
   scrollbar-width: none;
   -ms-overflow-style: none;
-  -webkit-overflow-scrolling: touch;
 }
 
 .carousel-track::-webkit-scrollbar {
   display: none;
 }
 
-/* Animações */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Responsividade para telas pequenas */
+@media (max-width: 640px) {
+  .category-carousel .carousel-track .product-card {
+    min-width: 150px;
+  }
+
+  .category-nav-button {
+    width: 30px;
+    height: 30px;
+    font-size: 0.8rem;
+  }
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+/* Melhorias para touch no iOS */
+.carousel-track {
+  -webkit-overflow-scrolling: touch;
 }
 
-.fa-spinner {
-  animation: spin 1s linear infinite;
-}
-
-/* Suporte para navegadores antigos */
+/* Suporte para navegadores mais antigos */
 @supports not (scroll-behavior: smooth) {
   .carousel-track {
     scroll-behavior: auto;
   }
 }
 
-/* Ajustes específicos para mobile */
-@media (max-width: 640px) {
-  .product-card {
-    min-width: calc(50% - 0.5rem) !important;
-  }
-  
-  .category-nav-button {
-    width: 30px !important;
-    height: 30px !important;
-  }
-}
-
-/* Correções para iOS */
-input, textarea, button {
-  -webkit-appearance: none;
-  border-radius: 0;
-}
-
-/* ADICIONE ISSO AO SEU style.css EXISTENTE */
-
-/* Garante tamanho consistente para todas as imagens de produtos */
-.product-image-container {
+/* Estilos específicos para a página de categorias */
+#categoryTitle {
   position: relative;
-  width: 100%;
-  aspect-ratio: 1/1; /* Mantém proporção quadrada */
-  overflow: hidden;
-  background: #f5f5f5;
+  padding-bottom: 0.5rem;
+}
+
+#categoryTitle::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: #3b82f6;
+}
+
+/* Melhorias para a grade de produtos */
+#productGrid {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilo para a mensagem quando não há produtos */
+#searchMessage {
+  font-size: 1.1rem;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-radius: 0.5rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Estilos para a paginação */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  padding: 0.5rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.25rem;
+  background-color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination button:hover:not(:disabled) {
+  background-color: #f1f5f9;
+}
+
+.pagination button.active {
+  background-color: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination .ellipsis {
   display: flex;
   align-items: center;
-  justify-content: center;
+  padding: 0 0.5rem;
 }
 
-.product-image-container img {
+/* Loading spinner */
+.fa-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Estilos para o banner */
+.banner-carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  background-color: #f5f5f5;
+}
+
+.banner-track {
+  display: flex;
+  transition: transform 0.5s ease;
+  height: 0;
+  padding-bottom: 50%;
+  position: relative;
+}
+
+.banner-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Mantém proporção sem cortar */
-  padding: 10px; /* Espaço ao redor da imagem */
+  min-width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* Ajustes específicos para mobile */
+.banner-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Estilo para a informação de busca */
+#searchInfo {
+  animation: fadeIn 0.3s ease-out;
+}
+
+#clearSearch {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: all 0.2s;
+}
+
+#clearSearch:hover {
+  background-color: #f1f5f9;
+}
+
+/* Responsividade adicional */
+@media (max-width: 768px) {
+  .banner-track {
+    padding-bottom: 60%;
+  }
+}
+
 @media (max-width: 640px) {
-  .product-card {
-      min-width: calc(50% - 10px) !important;
+  .pagination {
+    gap: 0.25rem;
   }
-  
-  .product-image-container {
-      aspect-ratio: 1/1.2; /* Proporção ligeiramente retangular */
-  }
-  
-  .product-image-container img {
-      max-height: 180px;
-      width: auto;
+
+  .pagination button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
   }
 }
 
-/* Remove estilos conflitantes existentes */
-.product-card-image, 
-.product-card-image img {
-  all: unset;
-}

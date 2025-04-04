@@ -69,7 +69,6 @@
       cursor: pointer;
     }
 
-    /* Carrossel Principal */
     .carousel-container {
       position: relative;
       overflow: hidden;
@@ -108,7 +107,6 @@
       right: 10px;
     }
 
-    /* Carrossel de Categorias */
     .category-carousel {
       margin-bottom: 3rem;
       position: relative;
@@ -137,92 +135,45 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* Cards de Produto - Mobile First */
+    /* Ajuste para mostrar 3 produtos no mobile */
     .category-carousel .carousel-track .product-card {
       scroll-snap-align: start;
-      min-width: calc(50% - 0.5rem);
+      min-width: calc(33.33% - 0.67rem);
+      /* 3 produtos com gap de 1rem */
       flex: 0 0 auto;
       border: 1px solid #e2e8f0;
       border-radius: 0.5rem;
       overflow: hidden;
       transition: transform 0.2s;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      margin-bottom: 0.5rem;
     }
 
-    .product-card {
-      display: flex;
-      flex-direction: column;
-      height: auto;
+    /* Ajuste fino para telas muito pequenas */
+    @media (max-width: 400px) {
+      .category-carousel .carousel-track .product-card {
+        min-width: calc(50% - 0.5rem);
+        /* 2 produtos se a tela for muito estreita */
+      }
     }
 
-    .product-card-image {
-      position: relative;
-      width: 100%;
-      padding-top: 100%;
-      overflow: hidden;
+    /* Para tablets */
+    @media (min-width: 640px) {
+      .category-carousel .carousel-track .product-card {
+        min-width: calc(25% - 0.75rem);
+        /* 4 produtos */
+      }
     }
 
-    .product-card-image img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+    /* Para desktops */
+    @media (min-width: 1024px) {
+      .category-carousel .carousel-track .product-card {
+        min-width: calc(20% - 0.8rem);
+        /* 5 produtos */
+      }
     }
 
-    .product-card-content {
-      padding: 0.75rem;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .product-card h4 {
-      font-size: 0.95rem;
-      font-weight: 500;
-      margin-bottom: 0.3rem;
-      line-height: 1.2;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      min-height: 2.4rem;
-    }
-
-    .product-card .price {
-      font-size: 1rem;
-      font-weight: bold;
-      color: #1e40af;
-      margin-bottom: 0.2rem;
-    }
-
-    .product-card .installments {
-      font-size: 0.8rem;
-      color: #4b5563;
-    }
-
-    .ready-to-ship {
-      position: absolute;
-      top: 0.5rem;
-      right: 0.5rem;
-      background-color: #10b981;
-      color: white;
-      font-size: 0.7rem;
-      padding: 0.2rem 0.5rem;
-      border-radius: 0.75rem;
-      font-weight: bold;
-      z-index: 10;
-    }
-
-    .view-all {
-      display: block;
-      text-align: center;
-      margin-top: 0.5rem;
-      color: #3b82f6;
-      font-weight: 500;
-      font-size: 0.9rem;
+    .category-carousel .carousel-track .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     .category-nav-button {
@@ -272,35 +223,11 @@
       object-position: center;
     }
 
-    /* Responsividade */
-    @media (min-width: 360px) {
-      .product-card h4 {
-        font-size: 1rem;
-      }
-      .product-card .price {
-        font-size: 1.1rem;
-      }
-    }
-
-    @media (min-width: 640px) {
-      .category-carousel .carousel-track .product-card {
-        min-width: calc(33.33% - 0.67rem);
-      }
-      
+    @media (max-width: 880px) {
       .banner-image {
+        width: 100%;
+        height: auto;
         max-height: 400px;
-      }
-    }
-
-    @media (min-width: 768px) {
-      .category-carousel .carousel-track .product-card {
-        min-width: calc(25% - 0.75rem);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .category-carousel .carousel-track .product-card {
-        min-width: calc(20% - 0.8rem);
       }
     }
 
@@ -372,7 +299,8 @@
         <a class="text-white font-bold hover:underline" href="categorias.html?category=outros">Outros Itens</a>
       </li>
       <li>
-        <a class="text-white font-bold hover:underline" href="categorias.html?category=pronta entrega">Pronta Entrega</a>
+        <a class="text-white font-bold hover:underline" href="categorias.html?category=pronta entrega">Pronta
+          Entrega</a>
       </li>
     </ul>
   </nav>
