@@ -91,7 +91,7 @@ async function createCategoryCarousels() {
             </div>
             <div class="text-center mt-2">
                 <a href="categorias.html?category=${encodeURIComponent(category)}" class="text-blue-600 hover:underline">
-                    Ver todos os ${category.toLowerCase()}
+                    Ver ${category.toLowerCase()}
                 </a>
             </div>
         `;

@@ -135,39 +135,82 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* Ajuste para mostrar 3 produtos no mobile */
+    /* Ajuste para mostrar 2 produtos no mobile com melhor espaçamento */
     .category-carousel .carousel-track .product-card {
       scroll-snap-align: start;
-      min-width: calc(33.33% - 0.67rem);
-      /* 3 produtos com gap de 1rem */
+      min-width: calc(50% - 0.5rem); /* 2 produtos com gap de 1rem */
       flex: 0 0 auto;
       border: 1px solid #e2e8f0;
       border-radius: 0.5rem;
       overflow: hidden;
       transition: transform 0.2s;
+      box-sizing: border-box;
     }
 
-    /* Ajuste fino para telas muito pequenas */
-    @media (max-width: 400px) {
-      .category-carousel .carousel-track .product-card {
-        min-width: calc(50% - 0.5rem);
-        /* 2 produtos se a tela for muito estreita */
-      }
+    /* Melhorias para os cards de produto no mobile */
+    .product-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
 
-    /* Para tablets */
+    .product-card img {
+      width: 100%;
+      height: 180px; /* Altura fixa para as imagens */
+      object-fit: cover;
+    }
+
+    .product-card-content {
+      padding: 0.75rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card h4 {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .product-card p {
+      font-size: 0.85rem;
+      margin-bottom: 0.25rem;
+    }
+
+    /* Para tablets - 3 produtos */
     @media (min-width: 640px) {
       .category-carousel .carousel-track .product-card {
-        min-width: calc(25% - 0.75rem);
-        /* 4 produtos */
+        min-width: calc(33.33% - 0.67rem);
+      }
+      
+      .product-card img {
+        height: 200px;
       }
     }
 
-    /* Para desktops */
+    /* Para desktops pequenos - 4 produtos */
+    @media (min-width: 768px) {
+      .category-carousel .carousel-track .product-card {
+        min-width: calc(25% - 0.75rem);
+      }
+      
+      .product-card img {
+        height: 220px;
+      }
+    }
+
+    /* Para desktops grandes - 5 produtos */
     @media (min-width: 1024px) {
       .category-carousel .carousel-track .product-card {
         min-width: calc(20% - 0.8rem);
-        /* 5 produtos */
+      }
+      
+      .product-card img {
+        height: 240px;
       }
     }
 
@@ -239,6 +282,18 @@
       .category-nav-button {
         opacity: 1;
         background: rgba(0, 0, 0, 0.7);
+      }
+      
+      /* Botões de compra mais visíveis no mobile */
+      .product-card button {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+      }
+      
+      /* Melhor espaçamento entre seções no mobile */
+      .category-carousel {
+        margin-bottom: 2rem;
       }
     }
   </style>
