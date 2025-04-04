@@ -77,7 +77,7 @@ async function createCategoryCarousels() {
                                 <div class="product-card-content">
                                     <h4>${product.name}</h4>
                                     <p class="price">${product.price}</p>
-                                    <p class="installments">6x de R$${valorParcela} (com acréscimo)</p>
+                                    <p class="installments">6x de R$${valorParcela}</p>
                                 </div>
                             </div>
                             `;
@@ -89,7 +89,7 @@ async function createCategoryCarousels() {
                 </button>
             </div>
             <a href="categorias.html?category=${encodeURIComponent(category)}" class="view-all">
-                Ver todos os ${category.toLowerCase()}
+                Ver Mais}
             </a>
         `;
 
