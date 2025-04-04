@@ -146,7 +146,7 @@
       border-radius: 0.5rem;
       overflow: hidden;
       transition: transform 0.2s;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       margin-bottom: 0.5rem;
     }
 
@@ -170,6 +170,8 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center;
+      /* Centraliza o foco da imagem */
     }
 
     .product-card-content {
@@ -277,6 +279,7 @@
       .product-card h4 {
         font-size: 1rem;
       }
+
       .product-card .price {
         font-size: 1.1rem;
       }
@@ -286,7 +289,7 @@
       .category-carousel .carousel-track .product-card {
         min-width: calc(33.33% - 0.67rem);
       }
-      
+
       .banner-image {
         max-height: 400px;
       }
@@ -312,6 +315,58 @@
       .category-nav-button {
         opacity: 1;
         background: rgba(0, 0, 0, 0.7);
+      }
+    }
+
+    @media (max-width: 640px) {
+
+      /* Contêiner da imagem */
+      .product-card-image {
+        position: relative;
+        width: 100%;
+        height: 180px !important;
+        /* Altura FIXA para mobile */
+        padding-top: 0 !important;
+        /* Remove o padding que causava desproporção */
+      }
+
+      /* Imagem dentro do contêiner */
+      .product-card-image img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100% !important;
+        object-fit: cover;
+        /* Corta a imagem para preencher o espaço */
+        object-position: center;
+        /* Centraliza o foco */
+      }
+
+      /* Garante que os cards tenham largura igual e ocupem 2 por linha */
+      .product-card {
+        width: calc(50% - 0.5rem) !important;
+        /* Largura fixa para 2 cards por linha */
+        min-width: unset !important;
+        /* Remove qualquer min-width conflitante */
+        margin: 0.25rem;
+        /* Espaçamento entre cards */
+        flex-shrink: 0;
+        /* Evita que os cards encolham */
+      }
+
+      /* Contêiner do carrossel - remove espaços extras */
+      .carousel-track {
+        gap: 0.5rem !important;
+        /* Espaço consistente entre cards */
+        padding: 0 0.25rem !important;
+        /* Alinhamento perfeito nas bordas */
+      }
+
+      /* Imagem dentro do card (opcional, para garantir que não ultrapasse) */
+      .product-card-image img {
+        max-width: 100%;
+        /* Garante que a imagem não vaze */
       }
     }
   </style>
@@ -372,7 +427,8 @@
         <a class="text-white font-bold hover:underline" href="categorias.html?category=outros">Outros Itens</a>
       </li>
       <li>
-        <a class="text-white font-bold hover:underline" href="categorias.html?category=pronta entrega">Pronta Entrega</a>
+        <a class="text-white font-bold hover:underline" href="categorias.html?category=pronta entrega">Pronta
+          Entrega</a>
       </li>
     </ul>
   </nav>

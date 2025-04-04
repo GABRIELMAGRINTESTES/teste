@@ -40,13 +40,25 @@ a:focus {
 
 /* Animações */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .fa-spinner {
@@ -65,7 +77,7 @@ a:focus {
   .product-card {
     min-width: calc(50% - 0.5rem) !important;
   }
-  
+
   .category-nav-button {
     width: 30px !important;
     height: 30px !important;
@@ -73,7 +85,40 @@ a:focus {
 }
 
 /* Correções para iOS */
-input, textarea, button {
+input,
+textarea,
+button {
   -webkit-appearance: none;
   border-radius: 0;
+}
+
+@media (max-width: 640px) {
+  .product-card-image {
+    padding-top: 120%;
+    /* Imagens um pouco mais altas em mobile */
+  }
+}
+
+@media (max-width: 640px) {
+  .product-card {
+    min-width: calc(50% - 0.5rem) !important;
+    /* Força 2 cards por linha */
+  }
+
+  .product-card-image {
+    padding-top: 120%;
+    /* Altura maior para mobile (ajuste conforme necessário) */
+  }
+
+  .product-card-image img {
+    object-position: top;
+    /* Alinha o topo da imagem para evitar cortes indesejados */
+  }
+}
+
+.product-image {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 200px;
+  /* Limite máximo para mobile */
 }
