@@ -69,6 +69,7 @@
       cursor: pointer;
     }
 
+    /* Carrossel Principal */
     .carousel-container {
       position: relative;
       overflow: hidden;
@@ -107,6 +108,7 @@
       right: 10px;
     }
 
+    /* Carrossel de Categorias */
     .category-carousel {
       margin-bottom: 3rem;
       position: relative;
@@ -135,27 +137,8 @@
       -webkit-overflow-scrolling: touch;
     }
 
-    /* PADRÃO PARA IMAGENS DOS PRODUTOS */
-    .product-card-image {
-      position: relative;
-      width: 100%;
-      padding-top: 100%; /* Aspect ratio 1:1 */
-      overflow: hidden;
-      background-color: #f8fafc; /* Fundo neutro */
-    }
-
-    .product-card-image img {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: contain; /* Garante que toda imagem seja visível */
-      object-position: center;
-      padding: 10px; /* Espaço interno */
-    }
-
-    .product-card {
+    /* Cards de Produto - Mobile First */
+    .category-carousel .carousel-track .product-card {
       scroll-snap-align: start;
       min-width: calc(50% - 0.5rem);
       flex: 0 0 auto;
@@ -164,6 +147,29 @@
       overflow: hidden;
       transition: transform 0.2s;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 0.5rem;
+    }
+
+    .product-card {
+      display: flex;
+      flex-direction: column;
+      height: auto;
+    }
+
+    .product-card-image {
+      position: relative;
+      width: 100%;
+      padding-top: 100%;
+      overflow: hidden;
+    }
+
+    .product-card-image img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .product-card-content {
@@ -250,6 +256,7 @@
       right: 10px;
     }
 
+    /* Banner Styles */
     .banner-container {
       position: relative;
       width: 100%;
@@ -265,25 +272,13 @@
       object-position: center;
     }
 
-    /* AJUSTES ESPECÍFICOS PARA MOBILE */
-    @media (max-width: 640px) {
-      .product-card {
-        min-width: calc(50% - 0.5rem) !important;
-      }
-      
-      .product-card-image {
-        padding-top: 120%; /* Imagens um pouco mais altas */
-      }
-      
-      .category-nav-button {
-        opacity: 1;
-        background: rgba(0, 0, 0, 0.7);
-        width: 30px;
-        height: 30px;
-      }
-      
+    /* Responsividade */
+    @media (min-width: 360px) {
       .product-card h4 {
-        font-size: 0.9rem;
+        font-size: 1rem;
+      }
+      .product-card .price {
+        font-size: 1.1rem;
       }
     }
 
@@ -291,21 +286,32 @@
       .category-carousel .carousel-track .product-card {
         min-width: calc(33.33% - 0.67rem);
       }
+      
+      .banner-image {
+        max-height: 400px;
+      }
     }
 
     @media (min-width: 768px) {
       .category-carousel .carousel-track .product-card {
         min-width: calc(25% - 0.75rem);
       }
-      
-      .product-card-image {
-        padding-top: 100%; /* Volta ao aspect ratio 1:1 */
-      }
     }
 
     @media (min-width: 1024px) {
       .category-carousel .carousel-track .product-card {
         min-width: calc(20% - 0.8rem);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .banner-image {
+        max-height: 300px;
+      }
+
+      .category-nav-button {
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.7);
       }
     }
   </style>
