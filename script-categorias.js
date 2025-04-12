@@ -10,6 +10,12 @@ let totalProducts = 0;
 let currentCategory = "";
 let currentSearchQuery = "";
 
+// Função para extrair o grupo do nome do produto (prefixo antes do hífen)
+function extractGroupFromName(productName) {
+    const match = productName.match(/^(.*?)\s*-/);
+    return match ? match[1].trim() : "Outros";
+}
+
 async function fetchProductsByCategory(category, page = 1) {
     const startIndex = (page - 1) * PAGE_SIZE;
     const endIndex = startIndex + PAGE_SIZE - 1;
@@ -83,45 +89,65 @@ async function displayProducts(page = 1) {
         message.textContent = "";
     }
 
-    products.forEach((product) => {
-        const valorComAcrescimo = parseFloat(product.price.replace("R$", "")) * 1.08;
-        const valorParcela = (valorComAcrescimo / 6).toFixed(2);
-
-        const productItem = document.createElement('div');
-        productItem.className = 'border rounded-lg overflow-hidden relative hover:shadow-md transition-shadow';
-        productItem.innerHTML = `
-            ${product.readyToShip ?
-                '<div class="pronta-entrega-balao">Pronta Entrega</div>' :
-                ''}
-            <div class="relative">
-                <img src="${product.images.length > 0 ? product.images[0] : product.image}" 
-                    alt="${product.name}" 
-                    class="w-full h-48 object-cover"
-                    loading="lazy">
-                <button class="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded-full hover:bg-gray-800 transition" 
-                        data-id="${product.id}"
-                        aria-label="Comprar ${product.name}">
-                    <i class="fas fa-shopping-bag"></i>
-                </button>
-            </div>
-            <div class="p-4 text-center">
-                <h2 class="text-lg font-semibold truncate">${product.name}</h2>
-                <p class="text-xl font-bold">${product.price}</p>
-                <p class="text-sm text-gray-500">6x de <span class="text-blue-600">R$${valorParcela}</span></p>
-            </div>
-        `;
-
-        productItem.querySelector('button[data-id]').addEventListener('click', () => {
-            const productId = productItem.querySelector('button').getAttribute('data-id');
-            window.location.href = `produto.html?id=${productId}`;
-        });
-
-        grid.appendChild(productItem);
+    // Agrupa produtos pelo prefixo do nome (ex: "TN DRIFT", "AIR MAX DN")
+    const groupedProducts = {};
+    products.forEach(product => {
+        const grupo = extractGroupFromName(product.name);
+        if (!groupedProducts[grupo]) {
+            groupedProducts[grupo] = [];
+        }
+        groupedProducts[grupo].push(product);
     });
+
+    // Renderiza cada grupo com um título
+    for (const [grupo, produtosDoGrupo] of Object.entries(groupedProducts)) {
+        const grupoTitle = document.createElement('h3');
+        grupoTitle.className = 'col-span-full text-xl font-bold mt-6 mb-2 border-b pb-2';
+        grupoTitle.textContent = grupo;
+        grid.appendChild(grupoTitle);
+
+        // Renderiza os produtos do grupo
+        produtosDoGrupo.forEach(product => {
+            const valorComAcrescimo = parseFloat(product.price.replace("R$", "")) * 1.08;
+            const valorParcela = (valorComAcrescimo / 6).toFixed(2);
+
+            const productItem = document.createElement('div');
+            productItem.className = 'border rounded-lg overflow-hidden relative hover:shadow-md transition-shadow';
+            productItem.innerHTML = `
+                ${product.readyToShip ?
+                    '<div class="pronta-entrega-balao">Pronta Entrega</div>' :
+                    ''}
+                <div class="relative">
+                    <img src="${product.images.length > 0 ? product.images[0] : product.image}" 
+                        alt="${product.name}" 
+                        class="w-full h-48 object-cover"
+                        loading="lazy">
+                    <button class="absolute bottom-2 left-1/2 transform -translate-x-1/2 bg-black text-white p-2 rounded-full hover:bg-gray-800 transition" 
+                            data-id="${product.id}"
+                            aria-label="Comprar ${product.name}">
+                        <i class="fas fa-shopping-bag"></i>
+                    </button>
+                </div>
+                <div class="p-4 text-center">
+                    <h2 class="text-lg font-semibold truncate">${product.name}</h2>
+                    <p class="text-xl font-bold">${product.price}</p>
+                    <p class="text-sm text-gray-500">6x de <span class="text-blue-600">R$${valorParcela}</span></p>
+                </div>
+            `;
+
+            productItem.querySelector('button[data-id]').addEventListener('click', () => {
+                const productId = productItem.querySelector('button').getAttribute('data-id');
+                window.location.href = `produto.html?id=${productId}`;
+            });
+
+            grid.appendChild(productItem);
+        });
+    }
 
     renderPagination();
 }
 
+// Funções de paginação, menu mobile e busca (mantidas iguais)
 function renderPagination() {
     const totalPages = Math.ceil(totalProducts / PAGE_SIZE);
     const paginationContainer = document.getElementById("paginationContainer") || document.createElement('div');
