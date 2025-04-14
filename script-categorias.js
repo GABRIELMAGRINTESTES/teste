@@ -4,7 +4,7 @@ const supabaseUrl = "https://akpmbgyrnoqvgegwnciz.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFrcG1iZ3lybm9xdmdlZ3duY2l6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzQ2NzE5NDAsImV4cCI6MjA1MDI0Nzk0MH0.mbN5DB16tfc_iQ6-chS2dUI7-0wc23KWQB-TcWib4t8";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-const PAGE_SIZE = 42;
+const PAGE_SIZE = 90;
 let currentPage = 1;
 let totalProducts = 0;
 let currentCategory = "";
