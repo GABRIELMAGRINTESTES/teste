@@ -10,7 +10,6 @@ let totalProducts = 0;
 let currentCategory = "";
 let currentSearchQuery = "";
 
-// Função para extrair o grupo do nome do produto (prefixo antes do hífen)
 function extractGroupFromName(productName) {
     const match = productName.match(/^(.*?)\s*-/);
     return match ? match[1].trim() : "Outros";
@@ -89,25 +88,24 @@ async function displayProducts(page = 1) {
         message.textContent = "";
     }
 
-    // Agrupa produtos pelo prefixo do nome (ex: "TN DRIFT", "AIR MAX DN")
     const groupedProducts = {};
     products.forEach(product => {
         const grupo = extractGroupFromName(product.name);
-        if (!groupedProducts[grupo]) {
-            groupedProducts[grupo] = [];
-        }
+        if (!groupedProducts[grupo]) groupedProducts[grupo] = [];
         groupedProducts[grupo].push(product);
     });
 
-    // Renderiza cada grupo com um título
-    for (const [grupo, produtosDoGrupo] of Object.entries(groupedProducts)) {
+    const sortedGroupNames = Object.keys(groupedProducts).sort((a, b) => a.localeCompare(b));
+
+    sortedGroupNames.forEach(grupo => {
+        groupedProducts[grupo].sort((a, b) => a.name.localeCompare(b.name));
+
         const grupoTitle = document.createElement('h3');
         grupoTitle.className = 'col-span-full text-xl font-bold mt-6 mb-2 border-b pb-2';
         grupoTitle.textContent = grupo;
         grid.appendChild(grupoTitle);
 
-        // Renderiza os produtos do grupo
-        produtosDoGrupo.forEach(product => {
+        groupedProducts[grupo].forEach(product => {
             const valorComAcrescimo = parseFloat(product.price.replace("R$", "")) * 1.08;
             const valorParcela = (valorComAcrescimo / 6).toFixed(2);
 
@@ -142,12 +140,11 @@ async function displayProducts(page = 1) {
 
             grid.appendChild(productItem);
         });
-    }
+    });
 
     renderPagination();
 }
 
-// Funções de paginação, menu mobile e busca (mantidas iguais)
 function renderPagination() {
     const totalPages = Math.ceil(totalProducts / PAGE_SIZE);
     const paginationContainer = document.getElementById("paginationContainer") || document.createElement('div');
@@ -160,9 +157,7 @@ function renderPagination() {
     prevButton.className = `px-4 py-2 rounded ${currentPage === 1 ? 'bg-gray-200 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`;
     prevButton.disabled = currentPage === 1;
     prevButton.addEventListener('click', () => {
-        if (currentPage > 1) {
-            updatePage(currentPage - 1);
-        }
+        if (currentPage > 1) updatePage(currentPage - 1);
     });
     paginationContainer.appendChild(prevButton);
 
@@ -217,9 +212,7 @@ function renderPagination() {
     nextButton.className = `px-4 py-2 rounded ${currentPage === totalPages ? 'bg-gray-200 cursor-not-allowed' : 'bg-blue-500 text-white hover:bg-blue-600'}`;
     nextButton.disabled = currentPage === totalPages;
     nextButton.addEventListener('click', () => {
-        if (currentPage < totalPages) {
-            updatePage(currentPage + 1);
-        }
+        if (currentPage < totalPages) updatePage(currentPage + 1);
     });
     paginationContainer.appendChild(nextButton);
 
